@@ -1,5 +1,5 @@
 {
-  "name": "@chart-platform/core",
+  "name": "@chart-platform/react-renderer",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -16,5 +16,18 @@
     "build": "tsc -p tsconfig.json",
     "test": "echo \"No tests yet\"",
     "lint": "echo \"No lint yet\""
+  },
+  "dependencies": {
+    "@chart-platform/core": "workspace:*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
   }
 }

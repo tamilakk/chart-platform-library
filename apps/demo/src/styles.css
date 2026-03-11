@@ -1,0 +1,37 @@
+:root {
+  font-family: Inter, system-ui, sans-serif;
+  color: #111827;
+  background: #f3f4f6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+h1 {
+  margin-bottom: 8px;
+}
+
+p {
+  margin-top: 0;
+  color: #4b5563;
+}
+
+.chart-card {
+  margin-top: 24px;
+  padding: 24px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  overflow: auto;
+}
