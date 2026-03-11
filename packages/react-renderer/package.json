@@ -11,7 +11,9 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "echo \"No tests yet\"",
@@ -19,6 +21,8 @@
   },
   "dependencies": {
     "@chart-platform/core": "workspace:*",
+    "echarts": "^6.0.0",
+    "echarts-for-react": "^3.0.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

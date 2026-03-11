@@ -28,3 +28,9 @@
 - Integrated shared packages `@chart-platform/core` and `@chart-platform/react-renderer`
 - Rendered first working bar chart in browser
 - Verified the end-to-end client-side flow from unified chart definition to SVG output
+
+## Step 6 – Migration to Apache ECharts
+- Added Apache ECharts as the selected rendering engine
+- Implemented adapter from unified `ChartDefinition` to ECharts option format
+- Replaced prototype manual SVG rendering with ECharts-based React rendering
+- Aligned implementation with the architectural concept described in the thesis

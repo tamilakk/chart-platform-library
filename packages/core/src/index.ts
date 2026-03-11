@@ -35,3 +35,5 @@ export interface PieChartDefinition extends BaseChartDefinition {
 export type ChartDefinition =
   | CartesianChartDefinition
   | PieChartDefinition;
+
+export { toEChartsOption } from "./adapters/toEChartsOption";
