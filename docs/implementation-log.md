@@ -15,3 +15,16 @@
 - Created shared package `@chart-platform/core`
 - Defined first unified chart model
 - Prepared the basis for shared frontend/backend chart contract
+
+## Step 4 – React renderer setup
+- Created package `@chart-platform/react-renderer`
+- Added dependency on shared package `@chart-platform/core`
+- Implemented first React renderer entry point
+- Implemented initial `BarChart` SVG component
+- Added first `ChartRenderer` component that dispatches by chart type
+
+## Step 5 – Demo application
+- Created demo application in `apps/demo`
+- Integrated shared packages `@chart-platform/core` and `@chart-platform/react-renderer`
+- Rendered first working bar chart in browser
+- Verified the end-to-end client-side flow from unified chart definition to SVG output
