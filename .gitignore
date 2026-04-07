@@ -10,3 +10,5 @@ coverage
 .idea
 .vscode
 *.tsbuildinfo
+packages/server-renderer/example.svg
+packages/server-renderer/example.png
