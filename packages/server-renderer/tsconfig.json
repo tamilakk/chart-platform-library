@@ -5,7 +5,6 @@
     "outDir": "dist",
     "composite": true,
     "module": "CommonJS",
-    "moduleResolution": "node10",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },
