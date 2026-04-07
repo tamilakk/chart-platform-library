@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import type { ChartDefinition } from "./types";
 import { validateChartDefinition } from "./validation";
+import { validateExportOptions } from "./validation";
+
 
 describe("validateChartDefinition", () => {
   it("accepts a valid bar chart definition", () => {
@@ -39,6 +41,16 @@ describe("validateChartDefinition", () => {
     );
   });
 
+  it("throws when export height is invalid", () => {
+    expect(() =>
+        validateExportOptions({
+        width: 800,
+        height: 0,
+        background: "#ffffff"
+        })
+    ).toThrow(/height must be greater than 0/i);
+});
+
   it("throws when pie chart has no data", () => {
     const chart: ChartDefinition = {
       type: "pie",
@@ -50,4 +62,6 @@ describe("validateChartDefinition", () => {
       /requires at least one data item/i
     );
   });
+  
+  
 });
