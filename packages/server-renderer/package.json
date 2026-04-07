@@ -2,6 +2,7 @@
   "name": "@chart-platform/server-renderer",
   "version": "0.1.0",
   "private": true,
+  "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [

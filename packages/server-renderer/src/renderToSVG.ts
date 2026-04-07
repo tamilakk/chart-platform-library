@@ -1,4 +1,4 @@
-import * as echarts from "echarts";
+import echarts = require("echarts");
 import type { ChartDefinition, ExportOptions } from "@chart-platform/core";
 import {
   toEChartsOption,
@@ -13,7 +13,7 @@ export async function renderToSVG(
   validateChartDefinition(definition);
   validateExportOptions(options);
 
-  const chart = echarts.init(null, undefined, {
+  const chart = echarts.init(null, null, {
     renderer: "svg",
     ssr: true,
     width: options.width,
