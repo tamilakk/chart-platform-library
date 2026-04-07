@@ -1,5 +1,18 @@
 {
   "name": "@chart-platform/server-renderer",
   "version": "0.1.0",
-  "private": true
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@chart-platform/core": "workspace:*",
+    "echarts": "^6.0.0",
+    "sharp": "^0.34.5"
+  }
 }

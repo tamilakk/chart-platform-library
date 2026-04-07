@@ -5,7 +5,11 @@
     "outDir": "dist",
     "composite": true,
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "types": ["node"]
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [
+    { "path": "../core" }
+  ]
 }
