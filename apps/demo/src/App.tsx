@@ -23,7 +23,6 @@ export default function App() {
         <article className="chart-card">
           <h2>Bar chart — single series</h2>
           <ChartRenderer definition={monthlySalesBar} height={360} />
-          <ValidationDemo />
         </article>
 
         <article className="chart-card">
@@ -45,6 +44,8 @@ export default function App() {
           <h2>Pie chart</h2>
           <ChartRenderer definition={deviceSharePie} height={420} />
         </article>
+
+        <ValidationDemo />
       </section>
     </main>
   );
