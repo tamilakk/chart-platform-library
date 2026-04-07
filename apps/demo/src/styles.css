@@ -71,3 +71,20 @@ body {
     grid-column: auto;
   }
 }
+.validation-text {
+  margin: 0 0 12px;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.validation-error {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #111827;
+  color: #f9fafb;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}

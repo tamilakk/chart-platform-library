@@ -1,4 +1,5 @@
 import { ChartRenderer } from "@chart-platform/react-renderer";
+import { ValidationDemo } from "./ValidationDemo";
 import {
   monthlySalesBar,
   revenueVsCostsBar,
@@ -22,6 +23,7 @@ export default function App() {
         <article className="chart-card">
           <h2>Bar chart — single series</h2>
           <ChartRenderer definition={monthlySalesBar} height={360} />
+          <ValidationDemo />
         </article>
 
         <article className="chart-card">
