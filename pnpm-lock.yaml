@@ -70,6 +70,8 @@ importers:
         specifier: ^19.0.0
         version: 19.2.3(@types/react@19.2.14)
 
+  packages/server-renderer: {}
+
 packages:
 
   '@babel/code-frame@7.29.0':

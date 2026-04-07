@@ -4,8 +4,6 @@ import { ChartRenderer } from "@chart-platform/react-renderer";
 const chart: ChartDefinition = {
   type: "bar",
   title: "Monthly Sales",
-  width: 800,
-  height: 400,
   labels: ["Jan", "Feb", "Mar", "Apr", "May"],
   series: [
     {
@@ -20,10 +18,10 @@ export default function App() {
   return (
     <main className="page">
       <h1>Chart Platform Library Demo</h1>
-      <p>First working bar chart rendered via shared library packages.</p>
+      <p>Interactive bar chart rendered from a shared chart definition.</p>
 
       <div className="chart-card">
-        <ChartRenderer definition={chart} />
+        <ChartRenderer definition={chart} height={400} />
       </div>
     </main>
   );

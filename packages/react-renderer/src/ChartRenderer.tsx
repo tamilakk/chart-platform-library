@@ -1,21 +1,27 @@
-import ReactECharts from "echarts-for-react";
 import type { ChartDefinition } from "@chart-platform/core";
-import { toEChartsOption } from "@chart-platform/core";
+import {
+  toEChartsOption,
+  validateChartDefinition
+} from "@chart-platform/core";
+import ReactECharts from "echarts-for-react";
 
 type ChartRendererProps = {
   definition: ChartDefinition;
+  height?: number;
 };
 
-export function ChartRenderer({ definition }: ChartRendererProps) {
+export function ChartRenderer({
+  definition,
+  height = 400
+}: ChartRendererProps) {
+  validateChartDefinition(definition);
+
   const option = toEChartsOption(definition);
 
   return (
     <ReactECharts
       option={option}
-      style={{
-        width: definition.width ?? 800,
-        height: definition.height ?? 400
-      }}
+      style={{ width: "100%", height }}
     />
   );
 }

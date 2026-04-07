@@ -2,7 +2,7 @@ import type {
   ChartDefinition,
   CartesianChartDefinition,
   PieChartDefinition
-} from "../index";
+} from "../types";
 
 type EChartsOption = Record<string, unknown>;
 

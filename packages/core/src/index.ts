@@ -1,39 +1,14 @@
-export type ChartType = "line" | "bar" | "pie";
+export type {
+  ChartType,
+  BaseChartDefinition,
+  Series,
+  CartesianChartDefinition,
+  PieChartDatum,
+  PieChartDefinition,
+  ChartDefinition
+} from "./types";
 
-export interface BaseChartDefinition {
-  type: ChartType;
-  title?: string;
-  width?: number;
-  height?: number;
-  theme?: "light" | "dark";
-}
+export type { ExportOptions } from "./export-options";
 
-export interface Series {
-  id: string;
-  label: string;
-  data: number[];
-}
-
-export interface CartesianChartDefinition extends BaseChartDefinition {
-  type: "line" | "bar";
-  labels: string[];
-  series: Series[];
-  xAxisLabel?: string;
-  yAxisLabel?: string;
-}
-
-export interface PieChartDatum {
-  label: string;
-  value: number;
-}
-
-export interface PieChartDefinition extends BaseChartDefinition {
-  type: "pie";
-  data: PieChartDatum[];
-}
-
-export type ChartDefinition =
-  | CartesianChartDefinition
-  | PieChartDefinition;
-
+export { validateChartDefinition, validateExportOptions } from "./validation";
 export { toEChartsOption } from "./adapters/toEChartsOption";
