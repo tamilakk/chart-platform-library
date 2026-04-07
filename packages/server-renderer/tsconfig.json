@@ -4,10 +4,8 @@
     "rootDir": "src",
     "outDir": "dist",
     "composite": true,
-    "declaration": true,
-    "declarationMap": true,
     "module": "CommonJS",
-    "moduleResolution": "node",
+    "moduleResolution": "node10",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },
