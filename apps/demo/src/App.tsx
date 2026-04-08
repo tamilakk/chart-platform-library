@@ -44,8 +44,9 @@ export default function App() {
           <h2>Pie chart</h2>
           <ChartRenderer definition={deviceSharePie} height={420} />
         </article>
-
+              
         <ValidationDemo />
+
       </section>
     </main>
   );
