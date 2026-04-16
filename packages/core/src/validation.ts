@@ -1,49 +1,100 @@
 import type {
   ChartDefinition,
   CartesianChartDefinition,
-  PieChartDefinition
+  PieChartDefinition,
+  Series
 } from "./types";
 import type { ExportOptions } from "./export-options";
 
-function validateCartesianChart(definition: CartesianChartDefinition): void {
-  if (!definition.labels || definition.labels.length === 0) {
-    throw new Error("Bar and line charts require at least one label.");
+function isNonEmptyString(value: string | undefined): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+function isFiniteNumber(value: number): boolean {
+  return Number.isFinite(value);
+}
+
+function validateSeries(
+  series: Series,
+  labelsCount: number,
+  index: number
+): void {
+  if (!isNonEmptyString(series.id)) {
+    throw new Error(`Series at index ${index} must have a non-empty id.`);
   }
 
-  if (!definition.series || definition.series.length === 0) {
-    throw new Error("Bar and line charts require at least one series.");
+  if (!isNonEmptyString(series.label)) {
+    throw new Error(`Series "${series.id}" must have a non-empty label.`);
   }
 
-  for (const series of definition.series) {
-    if (!series.label || series.label.trim().length === 0) {
-      throw new Error("Each series must have a non-empty label.");
-    }
+  if (!Array.isArray(series.data) || series.data.length === 0) {
+    throw new Error(`Series "${series.label}" must contain at least one data point.`);
+  }
 
-    if (!series.data || series.data.length === 0) {
-      throw new Error(`Series "${series.label}" must contain at least one data point.`);
-    }
+  if (series.data.length !== labelsCount) {
+    throw new Error(
+      `Series "${series.label}" data length must match labels length.`
+    );
+  }
 
-    if (series.data.length !== definition.labels.length) {
+  for (const [dataIndex, value] of series.data.entries()) {
+    if (!isFiniteNumber(value)) {
       throw new Error(
-        `Series "${series.label}" data length must match labels length.`
+        `Series "${series.label}" contains a non-finite value at index ${dataIndex}.`
       );
     }
   }
 }
 
+function validateCartesianChart(definition: CartesianChartDefinition): void {
+  if (!Array.isArray(definition.labels) || definition.labels.length === 0) {
+    throw new Error("Bar and line charts require at least one label.");
+  }
+
+  for (const [index, label] of definition.labels.entries()) {
+    if (!isNonEmptyString(label)) {
+      throw new Error(`Label at index ${index} must be a non-empty string.`);
+    }
+  }
+
+  if (!Array.isArray(definition.series) || definition.series.length === 0) {
+    throw new Error("Bar and line charts require at least one series.");
+  }
+
+  for (const [index, series] of definition.series.entries()) {
+    validateSeries(series, definition.labels.length, index);
+  }
+}
+
 function validatePieChart(definition: PieChartDefinition): void {
-  if (!definition.data || definition.data.length === 0) {
+  if (!Array.isArray(definition.data) || definition.data.length === 0) {
     throw new Error("Pie chart requires at least one data item.");
   }
 
-  for (const item of definition.data) {
-    if (!item.label || item.label.trim().length === 0) {
-      throw new Error("Each pie chart item must have a non-empty label.");
+  for (const [index, item] of definition.data.entries()) {
+    if (!isNonEmptyString(item.label)) {
+      throw new Error(`Pie chart item at index ${index} must have a non-empty label.`);
+    }
+
+    if (!isFiniteNumber(item.value)) {
+      throw new Error(
+        `Pie chart item "${item.label}" must have a finite numeric value.`
+      );
+    }
+
+    if (item.value < 0) {
+      throw new Error(
+        `Pie chart item "${item.label}" must not have a negative value.`
+      );
     }
   }
 }
 
 export function validateChartDefinition(definition: ChartDefinition): void {
+  if (!definition || typeof definition !== "object") {
+    throw new Error("Chart definition must be a valid object.");
+  }
+
   switch (definition.type) {
     case "bar":
     case "line":
@@ -60,11 +111,22 @@ export function validateChartDefinition(definition: ChartDefinition): void {
 }
 
 export function validateExportOptions(options: ExportOptions): void {
-  if (options.width <= 0) {
-    throw new Error("Export width must be greater than 0.");
+  if (!options || typeof options !== "object") {
+    throw new Error("Export options must be a valid object.");
   }
 
-  if (options.height <= 0) {
-    throw new Error("Export height must be greater than 0.");
+  if (!Number.isInteger(options.width) || options.width <= 0) {
+    throw new Error("Export width must be a positive integer.");
+  }
+
+  if (!Number.isInteger(options.height) || options.height <= 0) {
+    throw new Error("Export height must be a positive integer.");
+  }
+
+  if (
+    options.background !== undefined &&
+    !isNonEmptyString(options.background)
+  ) {
+    throw new Error("Export background must be a non-empty string when provided.");
   }
 }

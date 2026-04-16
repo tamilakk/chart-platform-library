@@ -6,9 +6,10 @@
     "composite": true,
     "module": "CommonJS",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "types": ["node"]
   },
-  "include": ["src", "src/dev-test.ts"],
+  "include": ["src"],
   "references": [
     { "path": "../core" }
   ]

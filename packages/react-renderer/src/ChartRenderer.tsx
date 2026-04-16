@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import type { ChartDefinition } from "@chart-platform/core";
 import {
   toEChartsOption,
@@ -5,23 +6,27 @@ import {
 } from "@chart-platform/core";
 import ReactECharts from "echarts-for-react";
 
-type ChartRendererProps = {
+export interface ChartRendererProps {
   definition: ChartDefinition;
   height?: number;
-};
+}
 
 export function ChartRenderer({
   definition,
   height = 400
 }: ChartRendererProps) {
-  validateChartDefinition(definition);
+  const option = useMemo(() => {
+    validateChartDefinition(definition);
+    return toEChartsOption(definition);
+  }, [definition]);
 
-  const option = toEChartsOption(definition);
-
-  return (
-    <ReactECharts
-      option={option}
-      style={{ width: "100%", height }}
-    />
+  const style = useMemo(
+    () => ({
+      width: "100%",
+      height
+    }),
+    [height]
   );
+
+  return <ReactECharts option={option} style={style} />;
 }

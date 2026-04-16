@@ -1,7 +1,11 @@
-import { renderToPNG, renderToSVG } from "./index";
-import { demoCharts, type ExportOptions } from "@chart-platform/core";
-import { mkdir, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import {
+  demoCharts,
+  type ExportOptions
+} from "@chart-platform/core";
+import {
+  renderToPNGBase64,
+  renderToSVGBase64
+} from "./index";
 
 const exportOptions: ExportOptions = {
   width: 800,
@@ -9,27 +13,14 @@ const exportOptions: ExportOptions = {
   background: "#ffffff"
 };
 
-function slugify(value: string): string {
-  return value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
 async function main() {
-  const outputDir = "tmp";
-  await mkdir(outputDir, { recursive: true });
-
   for (const [key, chart] of Object.entries(demoCharts)) {
-    const baseName = slugify(chart.title || key);
+    const svgBase64 = await renderToSVGBase64(chart, exportOptions);
+    const pngBase64 = await renderToPNGBase64(chart, exportOptions);
 
-    const svg = await renderToSVG(chart, exportOptions);
-    const png = await renderToPNG(chart, exportOptions);
-
-    await writeFile(join(outputDir, `${baseName}.svg`), svg, "utf-8");
-    await writeFile(join(outputDir, `${baseName}.png`), png);
-
-    console.log(`Exported ${baseName}.svg and ${baseName}.png`);
+    console.log(`=== ${key} ===`);
+    console.log(`SVG base64 length: ${svgBase64.length}`);
+    console.log(`PNG base64 length: ${pngBase64.length}`);
   }
 }
 

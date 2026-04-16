@@ -1,4 +1,5 @@
 import echarts = require("echarts");
+import type { EChartsOption } from "echarts";
 import type { ChartDefinition, ExportOptions } from "@chart-platform/core";
 import {
   toEChartsOption,
@@ -20,16 +21,16 @@ export async function renderToSVG(
     height: options.height
   });
 
-  const option = toEChartsOption(definition) as Record<string, unknown>;
+  try {
+    const option: EChartsOption = {
+      ...toEChartsOption(definition),
+      ...(options.background ? { backgroundColor: options.background } : {})
+    };
 
-  if (options.background) {
-    option.backgroundColor = options.background;
+    chart.setOption(option);
+
+    return chart.renderToSVGString();
+  } finally {
+    chart.dispose();
   }
-
-  chart.setOption(option);
-
-  const svg = chart.renderToSVGString();
-  chart.dispose();
-
-  return svg;
 }

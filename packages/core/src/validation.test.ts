@@ -1,67 +1,120 @@
 import { describe, expect, it } from "vitest";
-import type { ChartDefinition } from "./types";
-import { validateChartDefinition } from "./validation";
-import { validateExportOptions } from "./validation";
-
+import {
+  validateChartDefinition,
+  validateExportOptions
+} from "./validation";
+import {
+  monthlySalesBar,
+  deviceSharePie
+} from "./examples";
 
 describe("validateChartDefinition", () => {
   it("accepts a valid bar chart definition", () => {
-    const chart: ChartDefinition = {
-      type: "bar",
-      title: "Monthly Sales",
-      labels: ["Jan", "Feb", "Mar"],
-      series: [
-        {
-          id: "sales",
-          label: "Sales",
-          data: [12, 19, 9]
-        }
-      ]
-    };
-
-    expect(() => validateChartDefinition(chart)).not.toThrow();
+    expect(() => validateChartDefinition(monthlySalesBar)).not.toThrow();
   });
 
   it("throws when series length does not match labels length", () => {
-    const chart: ChartDefinition = {
-      type: "bar",
-      title: "Broken Chart",
-      labels: ["Jan", "Feb", "Mar"],
-      series: [
-        {
-          id: "broken",
-          label: "Broken",
-          data: [12, 19]
-        }
-      ]
-    };
-
-    expect(() => validateChartDefinition(chart)).toThrow(
-      /data length must match labels length/i
-    );
+    expect(() =>
+      validateChartDefinition({
+        type: "bar",
+        title: "Invalid chart",
+        labels: ["Jan", "Feb", "Mar"],
+        series: [
+          {
+            id: "sales",
+            label: "Sales",
+            data: [10, 20]
+          }
+        ]
+      })
+    ).toThrow(/data length must match labels length/i);
   });
 
   it("throws when export height is invalid", () => {
     expect(() =>
-        validateExportOptions({
+      validateExportOptions({
         width: 800,
         height: 0,
         background: "#ffffff"
-        })
-    ).toThrow(/height must be greater than 0/i);
-});
+      })
+    ).toThrow(/height.*positive integer/i);
+  });
 
   it("throws when pie chart has no data", () => {
-    const chart: ChartDefinition = {
-      type: "pie",
-      title: "Empty Pie",
-      data: []
-    };
-
-    expect(() => validateChartDefinition(chart)).toThrow(
-      /requires at least one data item/i
-    );
+    expect(() =>
+      validateChartDefinition({
+        type: "pie",
+        title: "Empty pie",
+        data: []
+      })
+    ).toThrow(/pie chart requires at least one data item/i);
   });
-  
-  
+
+  it("throws when series id is empty", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "line",
+        title: "Invalid series id",
+        labels: ["Jan", "Feb"],
+        series: [
+          {
+            id: "",
+            label: "Users",
+            data: [10, 20]
+          }
+        ]
+      })
+    ).toThrow(/must have a non-empty id/i);
+  });
+
+  it("throws when labels contain an empty string", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "bar",
+        title: "Invalid labels",
+        labels: ["Jan", ""],
+        series: [
+          {
+            id: "sales",
+            label: "Sales",
+            data: [10, 20]
+          }
+        ]
+      })
+    ).toThrow(/label at index 1 must be a non-empty string/i);
+  });
+
+  it("throws when series contains a non-finite value", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "line",
+        title: "Invalid numeric data",
+        labels: ["Jan", "Feb"],
+        series: [
+          {
+            id: "users",
+            label: "Users",
+            data: [10, Number.NaN]
+          }
+        ]
+      })
+    ).toThrow(/non-finite value/i);
+  });
+
+  it("throws when pie chart contains a negative value", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "pie",
+        title: "Invalid pie",
+        data: [
+          { label: "Desktop", value: 48 },
+          { label: "Mobile", value: -5 }
+        ]
+      })
+    ).toThrow(/must not have a negative value/i);
+  });
+
+  it("accepts a valid pie chart definition", () => {
+    expect(() => validateChartDefinition(deviceSharePie)).not.toThrow();
+  });
 });
