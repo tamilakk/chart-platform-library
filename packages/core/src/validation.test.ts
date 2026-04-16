@@ -4,8 +4,8 @@ import {
   validateExportOptions
 } from "./validation";
 import {
-  monthlySalesBar,
-  deviceSharePie
+  deviceSharePie,
+  monthlySalesBar
 } from "./examples";
 
 describe("validateChartDefinition", () => {
@@ -13,17 +13,21 @@ describe("validateChartDefinition", () => {
     expect(() => validateChartDefinition(monthlySalesBar)).not.toThrow();
   });
 
+  it("accepts a valid pie chart definition", () => {
+    expect(() => validateChartDefinition(deviceSharePie)).not.toThrow();
+  });
+
   it("throws when series length does not match labels length", () => {
     expect(() =>
       validateChartDefinition({
         type: "bar",
-        title: "Invalid chart",
+        title: "Broken Chart",
         labels: ["Jan", "Feb", "Mar"],
         series: [
           {
-            id: "sales",
-            label: "Sales",
-            data: [10, 20]
+            id: "broken",
+            label: "Broken",
+            data: [12, 19]
           }
         ]
       })
@@ -44,57 +48,74 @@ describe("validateChartDefinition", () => {
     expect(() =>
       validateChartDefinition({
         type: "pie",
-        title: "Empty pie",
+        title: "Empty Pie",
         data: []
       })
-    ).toThrow(/pie chart requires at least one data item/i);
+    ).toThrow(/requires at least one data item/i);
   });
 
   it("throws when series id is empty", () => {
     expect(() =>
       validateChartDefinition({
         type: "line",
-        title: "Invalid series id",
+        title: "Invalid Series Id",
         labels: ["Jan", "Feb"],
         series: [
           {
             id: "",
             label: "Users",
-            data: [10, 20]
+            data: [120, 180]
           }
         ]
       })
-    ).toThrow(/must have a non-empty id/i);
+    ).toThrow(/non-empty id/i);
   });
 
-  it("throws when labels contain an empty string", () => {
+  it("throws when label is empty", () => {
     expect(() =>
       validateChartDefinition({
         type: "bar",
-        title: "Invalid labels",
+        title: "Invalid Labels",
         labels: ["Jan", ""],
         series: [
           {
             id: "sales",
             label: "Sales",
-            data: [10, 20]
+            data: [12, 19]
           }
         ]
       })
     ).toThrow(/label at index 1 must be a non-empty string/i);
   });
 
-  it("throws when series contains a non-finite value", () => {
+  it("throws when series contains NaN", () => {
     expect(() =>
       validateChartDefinition({
         type: "line",
-        title: "Invalid numeric data",
+        title: "NaN Data",
         labels: ["Jan", "Feb"],
         series: [
           {
             id: "users",
             label: "Users",
-            data: [10, Number.NaN]
+            data: [120, Number.NaN]
+          }
+        ]
+      })
+    ).toThrow(/non-finite value/i);
+  });
+
+  it("throws when series contains Infinity", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "line",
+        title: "Infinite Data",
+        labels: ["Jan", "Feb"],
+        series: [
+          {
+            id: "users",
+            label: "Users",
+            data: [120, Number.POSITIVE_INFINITY]
           }
         ]
       })
@@ -105,7 +126,7 @@ describe("validateChartDefinition", () => {
     expect(() =>
       validateChartDefinition({
         type: "pie",
-        title: "Invalid pie",
+        title: "Invalid Pie",
         data: [
           { label: "Desktop", value: 48 },
           { label: "Mobile", value: -5 }
@@ -114,7 +135,48 @@ describe("validateChartDefinition", () => {
     ).toThrow(/must not have a negative value/i);
   });
 
-  it("accepts a valid pie chart definition", () => {
-    expect(() => validateChartDefinition(deviceSharePie)).not.toThrow();
+  it("throws when pie chart contains a non-finite value", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "pie",
+        title: "Invalid Pie",
+        data: [
+          { label: "Desktop", value: 48 },
+          { label: "Mobile", value: Number.NaN }
+        ]
+      })
+    ).toThrow(/finite numeric value/i);
+  });
+});
+
+describe("validateExportOptions", () => {
+  it("accepts valid export options", () => {
+    expect(() =>
+      validateExportOptions({
+        width: 800,
+        height: 400,
+        background: "#ffffff"
+      })
+    ).not.toThrow();
+  });
+
+  it("throws when export width is invalid", () => {
+    expect(() =>
+      validateExportOptions({
+        width: 0,
+        height: 400,
+        background: "#ffffff"
+      })
+    ).toThrow(/width.*positive integer/i);
+  });
+
+  it("throws when background is empty", () => {
+    expect(() =>
+      validateExportOptions({
+        width: 800,
+        height: 400,
+        background: ""
+      })
+    ).toThrow(/background must be a non-empty string/i);
   });
 });
