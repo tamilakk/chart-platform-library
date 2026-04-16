@@ -6,7 +6,7 @@ import {
   userGrowthLine,
   trafficSourcesLine,
   deviceSharePie
-} from "./examples";
+} from "@chart-platform/core";
 
 export default function App() {
   return (
