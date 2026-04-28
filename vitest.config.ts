@@ -28,6 +28,9 @@ export default defineConfig({
       exclude: [
         "packages/**/*.test.{ts,tsx}",
         "packages/**/dist/**",
+        "packages/**/index.{ts,tsx}",
+        "packages/**/types.ts",
+        "packages/**/export-options.ts",
         "packages/core/src/examples.ts",
         "packages/server-renderer/src/dev-test.ts",
         "packages/**/*.d.ts"
