@@ -8,10 +8,17 @@
     "build": "pnpm -r build",
     "dev": "pnpm --filter demo dev",
     "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "check": "pnpm test && pnpm build",
     "demo:server": "pnpm --filter @chart-platform/server-renderer demo"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "^25.5.2",
+    "@vitest/coverage-v8": "^4.1.5",
+    "jsdom": "^29.1.0",
     "typescript": "^5.9.3",
     "vitest": "^4.1.3"
   }

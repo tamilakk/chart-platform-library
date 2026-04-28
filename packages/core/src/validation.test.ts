@@ -7,6 +7,7 @@ import {
   deviceSharePie,
   monthlySalesBar
 } from "./examples";
+import { ChartDefinition } from "./types";
 
 describe("validateChartDefinition", () => {
   it("accepts a valid bar chart definition", () => {
@@ -314,4 +315,75 @@ describe("validateExportOptions", () => {
       })
     ).not.toThrow();
   });
+
+    it("throws when chart definition is not an object", () => {
+    expect(() =>
+      validateChartDefinition(null as unknown as ChartDefinition)
+    ).toThrow(/valid object/i);
+  });
+
+  it("throws for unsupported chart type", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "unknown"
+      } as unknown as ChartDefinition)
+    ).toThrow(/unsupported chart type/i);
+  });
+
+  it("throws when cartesian label is empty", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "bar",
+        labels: ["Jan", ""],
+        series: [
+          {
+            id: "sales",
+            label: "Sales",
+            data: [10, 20]
+          }
+        ]
+      })
+    ).toThrow(/label at index/i);
+  });
+
+  it("throws when pie value is negative", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "pie",
+        title: "Invalid Pie",
+        data: [
+          {
+            label: "Desktop",
+            value: -10
+          }
+        ]
+      })
+    ).toThrow(/must not have a negative value/i);
+  });
+
+  it("throws when funnel value is non-finite", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "funnel",
+        title: "Invalid Funnel",
+        data: [
+          {
+            label: "Visits",
+            value: Number.POSITIVE_INFINITY
+          }
+        ]
+      })
+    ).toThrow(/finite numeric value/i);
+  });
+
+  it("throws when raw ECharts option is not an object", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "echarts",
+        title: "Invalid Raw",
+        option: null
+      } as unknown as ChartDefinition)
+    ).toThrow(/valid option object/i);
+  });
+  
 });
