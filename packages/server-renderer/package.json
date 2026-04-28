@@ -9,7 +9,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "demo": "node dist/dev-test.js"
   },
   "dependencies": {
     "@chart-platform/core": "workspace:*",
