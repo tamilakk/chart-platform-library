@@ -1,11 +1,16 @@
 import { ChartRenderer } from "@chart-platform/react-renderer";
 import { ValidationDemo } from "./ValidationDemo";
 import {
+  conversionFunnel,
+  deviceSharePie,
+  heightWeightScatter,
   monthlySalesBar,
+  performanceGauge,
+  productQualityRadar,
+  rawMixedEChartsExample,
   revenueVsCostsBar,
-  userGrowthLine,
   trafficSourcesLine,
-  deviceSharePie
+  userGrowthLine
 } from "@chart-platform/core";
 
 export default function App() {
@@ -40,13 +45,37 @@ export default function App() {
           <ChartRenderer definition={trafficSourcesLine} height={360} />
         </article>
 
+        <article className="chart-card">
+          <h2>Scatter chart</h2>
+          <ChartRenderer definition={heightWeightScatter} height={360} />
+        </article>
+
+        <article className="chart-card">
+          <h2>Radar chart</h2>
+          <ChartRenderer definition={productQualityRadar} height={360} />
+        </article>
+
+        <article className="chart-card">
+          <h2>Gauge chart</h2>
+          <ChartRenderer definition={performanceGauge} height={360} />
+        </article>
+
+        <article className="chart-card">
+          <h2>Funnel chart</h2>
+          <ChartRenderer definition={conversionFunnel} height={360} />
+        </article>
+
         <article className="chart-card chart-card--wide">
           <h2>Pie chart</h2>
           <ChartRenderer definition={deviceSharePie} height={420} />
         </article>
-              
-        <ValidationDemo />
 
+        <article className="chart-card chart-card--wide">
+          <h2>Raw ECharts mixed chart</h2>
+          <ChartRenderer definition={rawMixedEChartsExample} height={420} />
+        </article>
+
+        <ValidationDemo />
       </section>
     </main>
   );

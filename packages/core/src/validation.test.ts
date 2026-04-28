@@ -179,4 +179,139 @@ describe("validateExportOptions", () => {
       })
     ).toThrow(/background must be a non-empty string/i);
   });
+
+    it("accepts a valid scatter chart definition", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "scatter",
+        title: "Scatter",
+        series: [
+          {
+            id: "points",
+            label: "Points",
+            data: [
+              { x: 1, y: 2 },
+              { x: 2, y: 4 }
+            ]
+          }
+        ]
+      })
+    ).not.toThrow();
+  });
+
+  it("throws when scatter point contains non-finite value", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "scatter",
+        title: "Invalid Scatter",
+        series: [
+          {
+            id: "points",
+            label: "Points",
+            data: [
+              { x: 1, y: Number.NaN }
+            ]
+          }
+        ]
+      })
+    ).toThrow(/non-finite point/i);
+  });
+
+  it("accepts a valid radar chart definition", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "radar",
+        title: "Radar",
+        indicators: [
+          { label: "A", max: 100 },
+          { label: "B", max: 100 }
+        ],
+        series: [
+          {
+            id: "score",
+            label: "Score",
+            data: [80, 90]
+          }
+        ]
+      })
+    ).not.toThrow();
+  });
+
+  it("throws when radar data length does not match indicators length", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "radar",
+        title: "Invalid Radar",
+        indicators: [
+          { label: "A", max: 100 },
+          { label: "B", max: 100 }
+        ],
+        series: [
+          {
+            id: "score",
+            label: "Score",
+            data: [80]
+          }
+        ]
+      })
+    ).toThrow(/data length must match indicators length/i);
+  });
+
+  it("accepts a valid gauge chart definition", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "gauge",
+        title: "Gauge",
+        label: "Score",
+        value: 75,
+        min: 0,
+        max: 100
+      })
+    ).not.toThrow();
+  });
+
+  it("throws when gauge value is outside range", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "gauge",
+        title: "Invalid Gauge",
+        label: "Score",
+        value: 120,
+        min: 0,
+        max: 100
+      })
+    ).toThrow(/within min and max range/i);
+  });
+
+  it("accepts a valid funnel chart definition", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "funnel",
+        title: "Funnel",
+        data: [
+          { label: "Visits", value: 100 },
+          { label: "Orders", value: 30 }
+        ]
+      })
+    ).not.toThrow();
+  });
+
+  it("accepts a raw ECharts definition", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "echarts",
+        title: "Raw",
+        option: {
+          xAxis: { type: "category", data: ["A", "B"] },
+          yAxis: { type: "value" },
+          series: [
+            {
+              type: "bar",
+              data: [1, 2]
+            }
+          ]
+        }
+      })
+    ).not.toThrow();
+  });
 });

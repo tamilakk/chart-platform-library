@@ -1,10 +1,21 @@
 export type {
   ChartType,
+  EChartsOptionLike,
   BaseChartDefinition,
   Series,
   CartesianChartDefinition,
   PieChartDatum,
   PieChartDefinition,
+  ScatterPoint,
+  ScatterSeries,
+  ScatterChartDefinition,
+  RadarIndicator,
+  RadarSeries,
+  RadarChartDefinition,
+  GaugeChartDefinition,
+  FunnelChartDatum,
+  FunnelChartDefinition,
+  RawEChartsDefinition,
   ChartDefinition
 } from "./types";
 
@@ -19,5 +30,10 @@ export {
   userGrowthLine,
   trafficSourcesLine,
   deviceSharePie,
+  heightWeightScatter,
+  productQualityRadar,
+  performanceGauge,
+  conversionFunnel,
+  rawMixedEChartsExample,
   demoCharts
 } from "./examples";
