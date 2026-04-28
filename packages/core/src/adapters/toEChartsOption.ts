@@ -235,6 +235,8 @@ export function toEChartsOption(definition: ChartDefinition): EChartsOption {
     case "echarts":
       return rawEChartsToOption(definition);
     default:
-      throw new Error(`Unsupported chart type: ${(definition as { type?: string }).type}`);
+      throw new Error(
+        `Unsupported chart type: ${(definition as { type?: string }).type}`
+      );
   }
 }
