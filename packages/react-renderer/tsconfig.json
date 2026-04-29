@@ -5,19 +5,21 @@
     "strict": true,
     "skipLibCheck": true,
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": false,
     "sourceMap": true,
     "esModuleInterop": true,
 
     "rootDir": "src",
     "outDir": "dist",
+    "declarationDir": "dist",
     "composite": true,
 
-    "module": "ESNext",
-    "moduleResolution": "bundler",
+    "module": "Node16",
+    "moduleResolution": "node16",
     "jsx": "react-jsx"
   },
   "include": ["src"],
+  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"],
   "references": [
     { "path": "../core" }
   ]

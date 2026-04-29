@@ -1,37 +1,41 @@
 {
   "name": "@chart-platform/react-renderer",
   "version": "0.1.0",
-  "private": true,
-  "type": "module",
+  "private": false,
+  "description": "React renderer for Chart Platform Library based on Apache ECharts.",
+  "license": "MIT",
+  "type": "commonjs",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    }
-  },
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "test": "echo \"No tests yet\"",
-    "lint": "echo \"No lint yet\""
+    "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@chart-platform/core": "workspace:*",
+    "@chart-platform/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "echarts": ">=6",
+    "echarts-for-react": ">=3"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "echarts": "^6.0.0",
     "echarts-for-react": "^3.0.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
-  },
-  "devDependencies": {
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0"
-  },
-  "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18"
   }
 }

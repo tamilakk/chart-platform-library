@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist-demo",
+    "declaration": false,
+    "declarationMap": false,
+    "composite": false,
+    "sourceMap": true
+  },
+  "include": ["src/dev-test.ts"]
+}

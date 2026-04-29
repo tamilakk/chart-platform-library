@@ -1,16 +1,27 @@
 {
   "name": "@chart-platform/server-renderer",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "description": "Server-side SVG and PNG renderer for Chart Platform Library.",
+  "license": "MIT",
   "type": "commonjs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "demo": "node dist/dev-test.js"
+    "build": "tsc -p tsconfig.build.json",
+    "build:demo": "tsc -p tsconfig.demo.json",
+    "demo": "pnpm run build:demo && node dist-demo/dev-test.js"
   },
   "dependencies": {
     "@chart-platform/core": "workspace:*",
