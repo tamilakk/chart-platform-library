@@ -1,32 +1,10 @@
+
+
 # Chart Platform Library
 
 Multiplatform open-source chart library for defining a chart once and rendering it both as an interactive React component on the client and as a static SVG or PNG image on the backend.
 
 The project is part of a bachelor thesis focused on reducing duplication between frontend chart rendering and backend image export by introducing a shared chart definition and a shared transformation pipeline.
-
-## Current MVP scope
-
-The current MVP supports:
-
-- bar charts
-  - single-series
-  - multi-series
-- line charts
-  - single-series
-  - multi-series
-- pie charts
-
-The library currently provides:
-
-- shared chart definition (`ChartDefinition`)
-- shared export options (`ExportOptions`)
-- shared runtime validation
-- shared transformation to Apache ECharts options
-- React renderer for interactive frontend usage
-- backend SVG export
-- backend PNG export
-- demo application
-- smoke tests
 
 ## Why Apache ECharts
 
@@ -148,74 +126,6 @@ Run automated tests:
 pnpm test
 ```
 
-## Development commands
-
-```bash
-import type { ChartDefinition } from "@chart-platform/core";
-import { ChartRenderer } from "@chart-platform/react-renderer";
-
-const chart: ChartDefinition = {
-  type: "bar",
-  title: "Monthly Sales",
-  labels: ["Jan", "Feb", "Mar", "Apr", "May"],
-  series: [
-    {
-      id: "sales",
-      label: "Sales",
-      data: [12, 19, 9, 25, 17]
-    }
-  ]
-};
-
-export default function Example() {
-  return <ChartRenderer definition={chart} height={360} />;
-}
-```
-
-## Backend usage
-
-```bash
-import type { ChartDefinition, ExportOptions } from "@chart-platform/core";
-import { renderToSVG, renderToPNG } from "@chart-platform/server-renderer";
-
-const chart: ChartDefinition = {
-  type: "pie",
-  title: "Device Share",
-  data: [
-    { label: "Desktop", value: 48 },
-    { label: "Mobile", value: 38 },
-    { label: "Tablet", value: 14 }
-  ]
-};
-
-const exportOptions: ExportOptions = {
-  width: 800,
-  height: 400,
-  background: "#ffffff"
-};
-
-async function main() {
-  const svg = await renderToSVG(chart, exportOptions);
-  const png = await renderToPNG(chart, exportOptions);
-
-  console.log(svg);
-  console.log(png.length);
-}
-
-main();
-```
-
-## Shared chart definition
-
-The current shared model supports two main categories:
-
-### Cartesian charts
-
-Used for:
-
-- bar charts
-- line charts
-
 Main fields:
 
 - `type`
@@ -292,14 +202,8 @@ Implemented:
 - backend PNG export
 - demo showcase
 - smoke tests
-
-Planned future improvements may include:
-
 - more chart types
-- richer configuration options
-- stronger accessibility support
 - more extensive automated tests
-- packaging and publication improvements
 
 ## Thesis context
 
