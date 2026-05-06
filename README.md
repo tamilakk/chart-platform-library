@@ -1,92 +1,23 @@
-
-
 # Chart Platform Library
 
-Multiplatform open-source chart library for defining a chart once and rendering it both as an interactive React component on the client and as a static SVG or PNG image on the backend.
+Multiplatform library for defining a chart once and rendering it in two ways:
 
-The project is part of a bachelor thesis focused on reducing duplication between frontend chart rendering and backend image export by introducing a shared chart definition and a shared transformation pipeline.
+- as an interactive React component on the client,
+- as a static SVG or PNG image on the backend.
 
-## Why Apache ECharts
+This repository is the implementation part of the bachelor thesis focused on reducing duplication between frontend chart rendering and backend export through a shared chart definition.
 
-Apache ECharts was selected as the rendering foundation because it offers:
+## Current functionality
 
-- good React integration through `echarts-for-react`
-- support for multiple rendering modes
-- server-side rendering capabilities suitable for static export
-- strong fit for a multiplatform charting workflow
+The project currently provides:
 
-## Architecture
-
-The project is organized as a pnpm monorepo with three main packages:
-
-- `@chart-platform/core`
-  - shared chart types
-  - export option types
-  - runtime validation
-  - shared adapter to Apache ECharts options
-
-- `@chart-platform/react-renderer`
-  - React component renderer using `echarts-for-react`
-
-- `@chart-platform/server-renderer`
-  - backend SVG export
-  - backend PNG export
-
-There is also a demo application in `apps/demo` that showcases the current MVP.
-
-## Repository structure
-
-
-```bash
-chart-platform-library/
-├─ apps/
-│  └─ demo/
-│     ├─ src/
-│     │  ├─ App.tsx
-│     │  ├─ ValidationDemo.tsx
-│     │  ├─ examples.ts
-│     │  ├─ main.tsx
-│     │  └─ styles.css
-│     ├─ index.html
-│     ├─ package.json
-│     ├─ tsconfig.json
-│     └─ vite.config.ts
-├─ packages/
-│  ├─ core/
-│  │  ├─ src/
-│  │  │  ├─ adapters/
-│  │  │  │  └─ toEChartsOption.ts
-│  │  │  ├─ export-options.ts
-│  │  │  ├─ index.ts
-│  │  │  ├─ types.ts
-│  │  │  ├─ validation.ts
-│  │  │  ├─ toEChartsOption.test.ts
-│  │  │  └─ validation.test.ts
-│  │  ├─ package.json
-│  │  └─ tsconfig.json
-│  ├─ react-renderer/
-│  │  ├─ src/
-│  │  │  ├─ ChartRenderer.tsx
-│  │  │  └─ index.tsx
-│  │  ├─ package.json
-│  │  └─ tsconfig.json
-│  └─ server-renderer/
-│     ├─ src/
-│     │  ├─ index.ts
-│     │  ├─ render.test.ts
-│     │  ├─ renderToPNG.ts
-│     │  └─ renderToSVG.ts
-│     ├─ package.json
-│     └─ tsconfig.json
-├─ docs/
-│  └─ implementation-log.md
-├─ README.md
-├─ package.json
-├─ pnpm-workspace.yaml
-├─ tsconfig.base.json
-├─ tsconfig.json
-└─ vitest.config.ts
-```
+- shared chart definition in `@chart-platform/core`,
+- runtime validation of input data,
+- transformation of chart definitions to Apache ECharts options,
+- React renderer in `@chart-platform/react-renderer`,
+- backend SVG and PNG export in `@chart-platform/server-renderer`,
+- demo application showing supported chart types,
+- automated tests and CI pipeline.
 
 ## How it works
 
@@ -98,8 +29,44 @@ chart-platform-library/
 
 This shared pipeline is the central idea of the project: define once, render on multiple platforms.
 
-## Installation
+## Supported chart types
 
+The current implementation includes:
+
+- bar chart,
+- line chart,
+- pie chart,
+- scatter chart,
+- radar chart,
+- gauge chart,
+- funnel chart,
+- raw Apache ECharts configuration.
+
+## Project structure
+
+- `packages/core` – shared types, validation and ECharts adapter
+- `packages/react-renderer` – React chart renderer
+- `packages/server-renderer` – backend SVG/PNG export
+- `apps/demo` – demo application
+- `docs` – supplementary implementation notes
+
+## Technologies
+
+The project is implemented as a pnpm monorepo using:
+
+- TypeScript
+- React
+- Apache ECharts
+- Vite
+- Vitest
+- Sharp
+
+## Requirements
+
+- Node.js 22 or newer
+- pnpm 10 or newer
+
+## Installation
 Clone the repository and install dependencies:
 
 ```bash
@@ -120,32 +87,38 @@ Run the demo application:
 pnpm dev
 ```
 
-Run automated tests:
-
+Run tests:
 ```bash
 pnpm test
 ```
 
-Main fields:
+Run tests with coverage:
 
-- `type`
-- `title`
-- `labels`
-- `series`
-- `xAxisLabel`
-- `yAxisLabel`
+```bash
+pnpm test:coverage
+```
 
-### Pie charts
+Build all packages and the demo:
 
-Used for:
+```bash
+pnpm build
+```
+Run the frontend demo:
 
-- pie charts
+```bash
+pnpm --filter demo dev --force
+```
 
-Main fields:
+Run the backend rendering demo:
 
-- `type`
-- `title`
-- `data`
+```bash
+pnpm demo:server
+```
+Run the basic verification pipeline locally:
+
+```bash
+pnpm check
+```
 
 ## Export options
 
@@ -167,43 +140,24 @@ The library includes shared runtime validation for:
 
 Invalid input produces clear runtime errors instead of failing silently.
 
-## Demo application
-
-The demo currently showcases:
-
-- bar chart — single series
-- bar chart — multi series
-- line chart — single series
-- line chart — multi series
-- pie chart
-- validation error example
-
 ## Testing
 
-The project currently includes smoke tests for:
+The current test suite covers:
 
-- shared validation
-- ECharts option generation
-- SVG export
-- PNG export
+- shared chart definitions and type-level constraints,
+- runtime validation of chart input data,
+- transformation of shared chart definitions into Apache ECharts options,
+- React chart rendering,
+- backend SVG export,
+- backend PNG export.
 
 ## Current status
 
-The current implementation should be considered an MVP.
+The project is currently in a functional MVP state.
 
-Implemented:
+It implements a shared chart definition that can be used for both frontend and backend rendering. On the client side, charts can be rendered as interactive React components. On the backend, the same input can be exported as static SVG and PNG images.
 
-- shared chart model
-- shared export options
-- shared validation
-- shared adapter layer
-- React rendering
-- backend SVG export
-- backend PNG export
-- demo showcase
-- smoke tests
-- more chart types
-- more extensive automated tests
+The repository includes a working demo application, automated tests, code coverage reporting, and a CI pipeline for build and test verification. The current implementation already demonstrates the main architectural idea of the thesis: defining a chart once and reusing it across multiple output environments.
 
 ## Thesis context
 
@@ -215,4 +169,4 @@ The thesis focuses on the design and implementation of a shared chart library th
 
 ## License
 
-This repository is currently part of an academic bachelor thesis project. License details can be added before public release.
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
