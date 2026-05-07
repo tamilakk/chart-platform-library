@@ -13,8 +13,8 @@
     "declarationDir": "dist",
     "composite": true,
 
-    "module": "ESNext",
-    "moduleResolution": "bundler"
+    "module": "Node16",
+    "moduleResolution": "node16"
   },
   "include": ["src"],
   "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"]
