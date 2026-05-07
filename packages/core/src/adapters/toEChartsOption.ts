@@ -9,12 +9,25 @@ import type {
   ScatterChartDefinition
 } from "../types";
 
+// Simplified ECharts configuration type used by the adapter.
 type EChartsOption = Record<string, unknown>;
 
+/**
+ * Creates a title config only when a title is provided.
+ *
+ * @param definition Chart definition with an optional title.
+ * @returns ECharts title config or undefined.
+ */
 function createTitle(definition: { title?: string }) {
   return definition.title ? { text: definition.title } : undefined;
 }
 
+/**
+ * Creates shared base config for Cartesian charts.
+ *
+ * @param definition Cartesian chart definition.
+ * @returns Base ECharts config for bar and line charts.
+ */
 function createCartesianBase(definition: CartesianChartDefinition): EChartsOption {
   const hasMultipleSeries = definition.series.length > 1;
 
@@ -45,6 +58,12 @@ function createCartesianBase(definition: CartesianChartDefinition): EChartsOptio
   };
 }
 
+/**
+ * Converts a bar chart definition to an ECharts option.
+ *
+ * @param definition Bar chart definition.
+ * @returns ECharts option for a bar chart.
+ */
 function cartesianToBarOption(definition: CartesianChartDefinition): EChartsOption {
   return {
     ...createCartesianBase(definition),
@@ -56,6 +75,12 @@ function cartesianToBarOption(definition: CartesianChartDefinition): EChartsOpti
   };
 }
 
+/**
+ * Converts a line chart definition to an ECharts option.
+ *
+ * @param definition Line chart definition.
+ * @returns ECharts option for a line chart.
+ */
 function cartesianToLineOption(definition: CartesianChartDefinition): EChartsOption {
   return {
     ...createCartesianBase(definition),
@@ -68,6 +93,12 @@ function cartesianToLineOption(definition: CartesianChartDefinition): EChartsOpt
   };
 }
 
+/**
+ * Converts a pie chart definition to an ECharts option.
+ *
+ * @param definition Pie chart definition.
+ * @returns ECharts option for a pie chart.
+ */
 function pieToOption(definition: PieChartDefinition): EChartsOption {
   return {
     title: createTitle(definition),
@@ -90,6 +121,12 @@ function pieToOption(definition: PieChartDefinition): EChartsOption {
   };
 }
 
+/**
+ * Converts a scatter chart definition to an ECharts option.
+ *
+ * @param definition Scatter chart definition.
+ * @returns ECharts option for a scatter chart.
+ */
 function scatterToOption(definition: ScatterChartDefinition): EChartsOption {
   const hasMultipleSeries = definition.series.length > 1;
 
@@ -124,6 +161,12 @@ function scatterToOption(definition: ScatterChartDefinition): EChartsOption {
   };
 }
 
+/**
+ * Converts a radar chart definition to an ECharts option.
+ *
+ * @param definition Radar chart definition.
+ * @returns ECharts option for a radar chart.
+ */
 function radarToOption(definition: RadarChartDefinition): EChartsOption {
   return {
     title: createTitle(definition),
@@ -148,6 +191,12 @@ function radarToOption(definition: RadarChartDefinition): EChartsOption {
   };
 }
 
+/**
+ * Converts a gauge chart definition to an ECharts option.
+ *
+ * @param definition Gauge chart definition.
+ * @returns ECharts option for a gauge chart.
+ */
 function gaugeToOption(definition: GaugeChartDefinition): EChartsOption {
   return {
     title: createTitle(definition),
@@ -178,6 +227,12 @@ function gaugeToOption(definition: GaugeChartDefinition): EChartsOption {
   };
 }
 
+/**
+ * Converts a funnel chart definition to an ECharts option.
+ *
+ * @param definition Funnel chart definition.
+ * @returns ECharts option for a funnel chart.
+ */
 function funnelToOption(definition: FunnelChartDefinition): EChartsOption {
   return {
     title: createTitle(definition),
@@ -212,10 +267,22 @@ function funnelToOption(definition: FunnelChartDefinition): EChartsOption {
   };
 }
 
+/**
+ * Returns a raw ECharts option without transformation.
+ *
+ * @param definition Raw ECharts definition.
+ * @returns Original ECharts option.
+ */
 function rawEChartsToOption(definition: RawEChartsDefinition): EChartsOption {
   return definition.option;
 }
 
+/**
+ * Converts the shared chart definition to an ECharts config.
+ *
+ * @param definition Shared chart definition.
+ * @returns ECharts option for the selected chart type.
+ */
 export function toEChartsOption(definition: ChartDefinition): EChartsOption {
   switch (definition.type) {
     case "bar":

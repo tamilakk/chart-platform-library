@@ -14,18 +14,43 @@ import type {
 } from "./types";
 import type { ExportOptions } from "./export-options";
 
+/**
+ * Checks whether a string is defined and not empty.
+ *
+ * @param value Value to check.
+ * @returns True if the value is a non-empty string.
+ */
 function isNonEmptyString(value: string | undefined): value is string {
   return typeof value === "string" && value.trim().length > 0;
 }
 
+/**
+ * Checks whether a value is a finite number.
+ *
+ * @param value Value to check.
+ * @returns True if the value is finite.
+ */
 function isFiniteNumber(value: number): boolean {
   return Number.isFinite(value);
 }
 
+/**
+ * Checks whether a value is a plain object.
+ *
+ * @param value Value to check.
+ * @returns True if the value is a plain object.
+ */
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
+/**
+ * Validates one Cartesian series.
+ *
+ * @param series Series to validate.
+ * @param labelsCount Expected number of labels.
+ * @param index Series index used in error messages.
+ */
 function validateSeries(
   series: Series,
   labelsCount: number,
@@ -58,6 +83,11 @@ function validateSeries(
   }
 }
 
+/**
+ * Validates a bar or line chart definition.
+ *
+ * @param definition Chart definition to validate.
+ */
 function validateCartesianChart(definition: CartesianChartDefinition): void {
   if (!Array.isArray(definition.labels) || definition.labels.length === 0) {
     throw new Error("Bar and line charts require at least one label.");
@@ -78,6 +108,12 @@ function validateCartesianChart(definition: CartesianChartDefinition): void {
   }
 }
 
+/**
+ * Validates labeled numeric data used by pie and funnel charts.
+ *
+ * @param data Data items to validate.
+ * @param chartName Chart name used in error messages.
+ */
 function validateLabeledValueData(
   data: Array<{ label: string; value: number }>,
   chartName: string
@@ -107,10 +143,21 @@ function validateLabeledValueData(
   }
 }
 
+/**
+ * Validates a pie chart definition.
+ *
+ * @param definition Pie chart definition to validate.
+ */
 function validatePieChart(definition: PieChartDefinition): void {
   validateLabeledValueData(definition.data, "Pie");
 }
 
+/**
+ * Validates one scatter series.
+ *
+ * @param series Scatter series to validate.
+ * @param index Series index used in error messages.
+ */
 function validateScatterSeries(series: ScatterSeries, index: number): void {
   if (!isNonEmptyString(series.id)) {
     throw new Error(`Scatter series at index ${index} must have a non-empty id.`);
@@ -135,6 +182,11 @@ function validateScatterSeries(series: ScatterSeries, index: number): void {
   }
 }
 
+/**
+ * Validates a scatter chart definition.
+ *
+ * @param definition Scatter chart definition to validate.
+ */
 function validateScatterChart(definition: ScatterChartDefinition): void {
   if (!Array.isArray(definition.series) || definition.series.length === 0) {
     throw new Error("Scatter chart requires at least one series.");
@@ -145,6 +197,12 @@ function validateScatterChart(definition: ScatterChartDefinition): void {
   }
 }
 
+/**
+ * Validates one radar indicator.
+ *
+ * @param indicator Radar indicator to validate.
+ * @param index Indicator index used in error messages.
+ */
 function validateRadarIndicator(
   indicator: RadarIndicator,
   index: number
@@ -166,6 +224,13 @@ function validateRadarIndicator(
   }
 }
 
+/**
+ * Validates one radar series.
+ *
+ * @param series Radar series to validate.
+ * @param indicatorsCount Expected number of indicators.
+ * @param index Series index used in error messages.
+ */
 function validateRadarSeries(
   series: RadarSeries,
   indicatorsCount: number,
@@ -198,6 +263,11 @@ function validateRadarSeries(
   }
 }
 
+/**
+ * Validates a radar chart definition.
+ *
+ * @param definition Radar chart definition to validate.
+ */
 function validateRadarChart(definition: RadarChartDefinition): void {
   if (!Array.isArray(definition.indicators) || definition.indicators.length === 0) {
     throw new Error("Radar chart requires at least one indicator.");
@@ -216,6 +286,11 @@ function validateRadarChart(definition: RadarChartDefinition): void {
   }
 }
 
+/**
+ * Validates a gauge chart definition.
+ *
+ * @param definition Gauge chart definition to validate.
+ */
 function validateGaugeChart(definition: GaugeChartDefinition): void {
   if (!isNonEmptyString(definition.label)) {
     throw new Error("Gauge chart requires a non-empty label.");
@@ -245,16 +320,31 @@ function validateGaugeChart(definition: GaugeChartDefinition): void {
   }
 }
 
+/**
+ * Validates a funnel chart definition.
+ *
+ * @param definition Funnel chart definition to validate.
+ */
 function validateFunnelChart(definition: FunnelChartDefinition): void {
   validateLabeledValueData(definition.data, "Funnel");
 }
 
+/**
+ * Validates a raw ECharts definition.
+ *
+ * @param definition Raw ECharts definition to validate.
+ */
 function validateRawEChartsDefinition(definition: RawEChartsDefinition): void {
   if (!isPlainObject(definition.option)) {
     throw new Error("Raw ECharts definition requires a valid option object.");
   }
 }
 
+/**
+ * Validates a shared chart definition.
+ *
+ * @param definition Chart definition to validate.
+ */
 export function validateChartDefinition(definition: ChartDefinition): void {
   if (!definition || typeof definition !== "object") {
     throw new Error("Chart definition must be a valid object.");
@@ -290,6 +380,11 @@ export function validateChartDefinition(definition: ChartDefinition): void {
   }
 }
 
+/**
+ * Validates export options for static output.
+ *
+ * @param options Export options to validate.
+ */
 export function validateExportOptions(options: ExportOptions): void {
   if (!options || typeof options !== "object") {
     throw new Error("Export options must be a valid object.");

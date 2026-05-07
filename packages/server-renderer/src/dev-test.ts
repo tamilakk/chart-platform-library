@@ -11,14 +11,22 @@ import { renderToPNGBase64 } from "./renderToPNGBase64";
 import { renderToSVG } from "./renderToSVG";
 import { renderToSVGBase64 } from "./renderToSVGBase64";
 
+// Shared export settings used in the demo.
 const exportOptions: ExportOptions = {
   width: 800,
   height: 400,
   background: "#ffffff"
 };
 
+// Output directory for generated demo files.
 const outputDir = path.resolve(process.cwd(), "generated-output");
 
+/**
+ * Renders one chart to all supported output formats.
+ *
+ * @param name File name prefix for generated outputs.
+ * @param chart Chart definition to render.
+ */
 async function renderChart(name: string, chart: ChartDefinition) {
   const svg = await renderToSVG(chart, exportOptions);
   const png = await renderToPNG(chart, exportOptions);
@@ -54,6 +62,9 @@ async function renderChart(name: string, chart: ChartDefinition) {
   console.log("");
 }
 
+/**
+ * Runs the backend demo for all example charts.
+ */
 async function main() {
   await mkdir(outputDir, { recursive: true });
 
@@ -68,6 +79,11 @@ async function main() {
   console.log("Backend demo completed successfully.");
 }
 
+/**
+ * Handles unexpected demo errors.
+ *
+ * @param error Caught error from the demo run.
+ */
 main().catch((error) => {
   console.error("Backend demo failed.");
   console.error(error);

@@ -7,6 +7,13 @@ import {
   validateExportOptions
 } from "@chart-platform/core";
 
+/**
+ * Renders a chart definition to an SVG string.
+ *
+ * @param definition Chart definition to render.
+ * @param options Output settings for the export.
+ * @returns SVG output as a string.
+ */
 export async function renderToSVG(
   definition: ChartDefinition,
   options: ExportOptions

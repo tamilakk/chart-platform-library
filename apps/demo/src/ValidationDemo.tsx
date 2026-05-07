@@ -1,6 +1,7 @@
 import { validateChartDefinition } from "@chart-platform/core";
 import type { ChartDefinition } from "@chart-platform/core";
 
+// Example of invalid input used to demonstrate validation.
 const invalidChart: ChartDefinition = {
   type: "bar",
   title: "Invalid Example",
@@ -14,6 +15,11 @@ const invalidChart: ChartDefinition = {
   ]
 };
 
+/**
+ * Renders a demo of runtime validation for invalid chart input.
+ *
+ * @returns Demo section showing the validation error message.
+ */
 export function ValidationDemo() {
   let errorMessage = "No validation error.";
 

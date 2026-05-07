@@ -13,6 +13,11 @@ import {
   userGrowthLine
 } from "@chart-platform/core";
 
+/**
+ * Renders the demo application with example charts.
+ *
+ * @returns Demo page with frontend chart examples.
+ */
 export default function App() {
   return (
     <main className="page">

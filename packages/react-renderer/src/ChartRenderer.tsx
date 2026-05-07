@@ -11,6 +11,13 @@ export interface ChartRendererProps {
   height?: number;
 }
 
+/**
+ * Renders a chart from the shared chart definition.
+ *
+ * @param definition Chart definition to render.
+ * @param height Optional chart height in pixels.
+ * @returns React chart component.
+ */
 export function ChartRenderer({
   definition,
   height = 400
