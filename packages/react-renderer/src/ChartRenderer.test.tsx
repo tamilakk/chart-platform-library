@@ -49,7 +49,7 @@ describe("ChartRenderer", () => {
     expect(option.title.text).toBe("Monthly Sales");
   });
 
-  it("throws for invalid chart definitions", () => {
+  it("shows an error message for invalid chart definitions instead of crashing", () => {
     const invalidChart = {
       type: "bar",
       title: "Invalid",
@@ -63,14 +63,11 @@ describe("ChartRenderer", () => {
       ]
     } as unknown as ChartDefinition;
 
-    const consoleError = vi
-      .spyOn(console, "error")
-      .mockImplementation(() => undefined);
+    render(<ChartRenderer definition={invalidChart} height={360} />);
 
-    expect(() =>
-      render(<ChartRenderer definition={invalidChart} height={360} />)
-    ).toThrow(/data length must match labels length/i);
+    const alert = screen.getByRole("alert");
 
-    consoleError.mockRestore();
+    expect(alert).toBeInTheDocument();
+    expect(alert.textContent).toMatch(/data length must match labels length/i);
   });
 });
