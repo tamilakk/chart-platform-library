@@ -13,13 +13,30 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
       "require": "./dist/index.js",
       "default": "./dist/index.js"
     }
   },
   "scripts": {
     "build": "tsc -p tsconfig.json"
+  },
+  "keywords": [
+    "charts",
+    "echarts",
+    "react",
+    "typescript",
+    "visualization",
+    "multiplatform",
+    "react-component"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamilakk/chart-platform-library.git",
+    "directory": "packages/react-renderer"
+  },
+  "homepage": "https://github.com/tamilakk/chart-platform-library#readme",
+  "bugs": {
+    "url": "https://github.com/tamilakk/chart-platform-library/issues"
   },
   "dependencies": {
     "@chart-platform/core": "workspace:*"

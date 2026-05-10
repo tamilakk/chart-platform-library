@@ -13,12 +13,28 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
       "require": "./dist/index.js",
       "default": "./dist/index.js"
     }
   },
   "scripts": {
     "build": "tsc -p tsconfig.json"
+  },
+  "keywords": [
+    "charts",
+    "echarts",
+    "typescript",
+    "visualization",
+    "multiplatform",
+    "chart-definition"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamilakk/chart-platform-library.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/tamilakk/chart-platform-library#readme",
+  "bugs": {
+    "url": "https://github.com/tamilakk/chart-platform-library/issues"
   }
 }

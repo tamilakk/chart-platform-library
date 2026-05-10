@@ -13,7 +13,6 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
       "require": "./dist/index.js",
       "default": "./dist/index.js"
     }
@@ -22,6 +21,26 @@
     "build": "tsc -p tsconfig.build.json",
     "build:demo": "tsc -p tsconfig.demo.json",
     "demo": "pnpm run build:demo && node dist-demo/dev-test.js"
+  },
+  "keywords": [
+    "charts",
+    "echarts",
+    "nodejs",
+    "typescript",
+    "visualization",
+    "multiplatform",
+    "svg",
+    "png",
+    "server-side-rendering"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamilakk/chart-platform-library.git",
+    "directory": "packages/server-renderer"
+  },
+  "homepage": "https://github.com/tamilakk/chart-platform-library#readme",
+  "bugs": {
+    "url": "https://github.com/tamilakk/chart-platform-library/issues"
   },
   "dependencies": {
     "@chart-platform/core": "workspace:*",
