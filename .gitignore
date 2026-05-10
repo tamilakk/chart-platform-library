@@ -15,4 +15,4 @@ packages/server-renderer/example.svg
 packages/server-renderer/example.png
 packages/server-renderer/dist-demo
 *.tgz
-tmp-consumer
+tmp-consumer.claude/worktrees/
