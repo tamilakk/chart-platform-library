@@ -161,6 +161,15 @@ describe("validateExportOptions", () => {
     ).not.toThrow();
   });
 
+  it("accepts export options without background", () => {
+    expect(() =>
+      validateExportOptions({
+        width: 800,
+        height: 400
+      })
+    ).not.toThrow();
+  });
+
   it("throws when export width is invalid", () => {
     expect(() =>
       validateExportOptions({
@@ -385,5 +394,55 @@ describe("validateExportOptions", () => {
       } as unknown as ChartDefinition)
     ).toThrow(/valid option object/i);
   });
-  
+
+  it("throws when cartesian chart has no series", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "bar",
+        title: "No Series",
+        labels: ["Jan", "Feb"],
+        series: []
+      })
+    ).toThrow(/require at least one series/i);
+  });
+
+  it("throws when scatter chart has no series", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "scatter",
+        title: "Empty Scatter",
+        series: []
+      })
+    ).toThrow(/at least one series/i);
+  });
+
+  it("throws when gauge min is greater than or equal to max", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "gauge",
+        title: "Invalid Gauge",
+        label: "Score",
+        value: 50,
+        min: 100,
+        max: 50
+      })
+    ).toThrow(/min must be lower than max/i);
+  });
+
+  it("throws when radar has no indicators", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "radar",
+        title: "Empty Radar",
+        indicators: [],
+        series: [{ id: "s", label: "S", data: [] }]
+      })
+    ).toThrow(/at least one indicator/i);
+  });
+
+  it("throws when export options is not an object", () => {
+    expect(() =>
+      validateExportOptions(null as unknown as { width: number; height: number })
+    ).toThrow(/valid object/i);
+  });
 });
