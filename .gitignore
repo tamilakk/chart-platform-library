@@ -16,3 +16,4 @@ packages/server-renderer/example.png
 packages/server-renderer/dist-demo
 *.tgz
 tmp-consumer.claude/worktrees/
+.claude/
