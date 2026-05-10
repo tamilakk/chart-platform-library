@@ -16,15 +16,22 @@ export interface ChartRendererProps {
  *
  * @param definition Chart definition to render.
  * @param height Optional chart height in pixels.
- * @returns React chart component.
+ * @returns React chart component, or an error message when the definition is invalid.
  */
 export function ChartRenderer({
   definition,
   height = 400
 }: ChartRendererProps) {
-  const option = useMemo(() => {
-    validateChartDefinition(definition);
-    return toEChartsOption(definition);
+  const result = useMemo(() => {
+    try {
+      validateChartDefinition(definition);
+      return { option: toEChartsOption(definition), error: null };
+    } catch (err) {
+      return {
+        option: null,
+        error: err instanceof Error ? err.message : String(err)
+      };
+    }
   }, [definition]);
 
   const style = useMemo(
@@ -35,5 +42,24 @@ export function ChartRenderer({
     [height]
   );
 
-  return <ReactECharts option={option} style={style} />;
+  if (result.error) {
+    return (
+      <div
+        role="alert"
+        style={{
+          color: "#b91c1c",
+          background: "#fef2f2",
+          border: "1px solid #fecaca",
+          borderRadius: 4,
+          padding: "8px 12px",
+          fontFamily: "monospace",
+          fontSize: 13
+        }}
+      >
+        Chart error: {result.error}
+      </div>
+    );
+  }
+
+  return <ReactECharts option={result.option!} style={style} />;
 }
