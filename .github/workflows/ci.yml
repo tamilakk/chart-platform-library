@@ -29,6 +29,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build core (required for project references)
+        run: pnpm --filter @chart-platform/core build
+
       - name: Run type check
         run: pnpm typecheck
 
