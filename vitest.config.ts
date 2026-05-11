@@ -34,7 +34,13 @@ export default defineConfig({
         "packages/core/src/examples.ts",
         "packages/server-renderer/src/dev-test.ts",
         "packages/**/*.d.ts"
-      ]
+      ],
+      thresholds: {
+        lines: 95,
+        functions: 95,
+        branches: 90,
+        statements: 95
+      }
     }
   }
 });
