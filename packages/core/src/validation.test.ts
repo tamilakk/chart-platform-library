@@ -445,4 +445,223 @@ describe("validateExportOptions", () => {
       validateExportOptions(null as unknown as { width: number; height: number })
     ).toThrow(/valid object/i);
   });
+
+  // Cartesian series field validation
+  it("throws when series label is empty", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "bar",
+        title: "Empty Series Label",
+        labels: ["Jan", "Feb"],
+        series: [{ id: "sales", label: "", data: [10, 20] }]
+      })
+    ).toThrow(/non-empty label/i);
+  });
+
+  it("throws when series data array is empty", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "bar",
+        title: "Empty Data",
+        labels: ["Jan", "Feb"],
+        series: [{ id: "sales", label: "Sales", data: [] }]
+      })
+    ).toThrow(/at least one data point/i);
+  });
+
+  it("throws when cartesian labels array is empty", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "line",
+        title: "No Labels",
+        labels: [],
+        series: [{ id: "s", label: "S", data: [1] }]
+      })
+    ).toThrow(/at least one label/i);
+  });
+
+  // Pie/funnel item label validation
+  it("throws when pie chart item has empty label", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "pie",
+        title: "Empty Label Pie",
+        data: [{ label: "", value: 10 }]
+      })
+    ).toThrow(/non-empty label/i);
+  });
+
+  // Scatter series field validation
+  it("throws when scatter series id is empty", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "scatter",
+        title: "No Scatter Id",
+        series: [{ id: "", label: "Points", data: [{ x: 1, y: 2 }] }]
+      })
+    ).toThrow(/non-empty id/i);
+  });
+
+  it("throws when scatter series label is empty", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "scatter",
+        title: "No Scatter Label",
+        series: [{ id: "pts", label: "", data: [{ x: 1, y: 2 }] }]
+      })
+    ).toThrow(/non-empty label/i);
+  });
+
+  it("throws when scatter series data array is empty", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "scatter",
+        title: "Empty Scatter Data",
+        series: [{ id: "pts", label: "Points", data: [] }]
+      })
+    ).toThrow(/at least one point/i);
+  });
+
+  // Radar indicator validation
+  it("throws when radar indicator label is empty", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "radar",
+        title: "Bad Indicator",
+        indicators: [{ label: "", max: 100 }],
+        series: [{ id: "s", label: "S", data: [80] }]
+      })
+    ).toThrow(/non-empty label/i);
+  });
+
+  it("throws when radar indicator max is non-finite", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "radar",
+        title: "Infinite Max",
+        indicators: [{ label: "Speed", max: Number.POSITIVE_INFINITY }],
+        series: [{ id: "s", label: "S", data: [80] }]
+      })
+    ).toThrow(/finite number/i);
+  });
+
+  it("throws when radar indicator max is zero or negative", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "radar",
+        title: "Zero Max",
+        indicators: [{ label: "Speed", max: 0 }],
+        series: [{ id: "s", label: "S", data: [0] }]
+      })
+    ).toThrow(/greater than zero/i);
+  });
+
+  // Radar series field validation
+  it("throws when radar series id is empty", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "radar",
+        title: "No Radar Id",
+        indicators: [{ label: "A", max: 100 }],
+        series: [{ id: "", label: "Score", data: [80] }]
+      })
+    ).toThrow(/non-empty id/i);
+  });
+
+  it("throws when radar series label is empty", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "radar",
+        title: "No Radar Label",
+        indicators: [{ label: "A", max: 100 }],
+        series: [{ id: "s", label: "", data: [80] }]
+      })
+    ).toThrow(/non-empty label/i);
+  });
+
+  it("throws when radar series data array is empty", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "radar",
+        title: "Empty Radar Data",
+        indicators: [{ label: "A", max: 100 }],
+        series: [{ id: "s", label: "Score", data: [] }]
+      })
+    ).toThrow(/must contain data/i);
+  });
+
+  it("throws when radar series contains a non-finite value", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "radar",
+        title: "NaN Radar",
+        indicators: [{ label: "A", max: 100 }, { label: "B", max: 100 }],
+        series: [{ id: "s", label: "Score", data: [80, Number.NaN] }]
+      })
+    ).toThrow(/non-finite value/i);
+  });
+
+  it("throws when radar chart has no series", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "radar",
+        title: "No Radar Series",
+        indicators: [{ label: "A", max: 100 }],
+        series: []
+      })
+    ).toThrow(/at least one series/i);
+  });
+
+  // Gauge field validation
+  it("throws when gauge label is empty", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "gauge",
+        title: "No Gauge Label",
+        label: "",
+        value: 50,
+        min: 0,
+        max: 100
+      })
+    ).toThrow(/non-empty label/i);
+  });
+
+  it("throws when gauge value is non-finite", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "gauge",
+        title: "NaN Gauge",
+        label: "Score",
+        value: Number.NaN,
+        min: 0,
+        max: 100
+      })
+    ).toThrow(/finite number/i);
+  });
+
+  it("throws when gauge min is non-finite", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "gauge",
+        title: "Infinite Min",
+        label: "Score",
+        value: 50,
+        min: Number.POSITIVE_INFINITY,
+        max: 100
+      })
+    ).toThrow(/finite number/i);
+  });
+
+  it("throws when gauge max is non-finite", () => {
+    expect(() =>
+      validateChartDefinition({
+        type: "gauge",
+        title: "Infinite Max",
+        label: "Score",
+        value: 50,
+        min: 0,
+        max: Number.POSITIVE_INFINITY
+      })
+    ).toThrow(/finite number/i);
+  });
 });

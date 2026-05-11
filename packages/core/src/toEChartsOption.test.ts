@@ -202,6 +202,12 @@ describe("toEChartsOption", () => {
     expect(data[1]).toEqual({ name: "Orders", value: 30 });
   });
 
+  it("throws for an unsupported chart type", () => {
+    const unknown = { type: "heatmap", title: "X" } as unknown as ChartDefinition;
+
+    expect(() => toEChartsOption(unknown)).toThrow(/unsupported chart type/i);
+  });
+
   it("returns raw ECharts option unchanged", () => {
     const rawOption = {
       xAxis: { type: "category", data: ["A", "B"] },
