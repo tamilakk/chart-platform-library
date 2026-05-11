@@ -6,7 +6,8 @@ import "@testing-library/jest-dom/vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import type { ChartDefinition } from "@chart-platform/core";
 import { monthlySalesBar } from "@chart-platform/core";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi, beforeEach } from "vitest";
+import * as core from "@chart-platform/core";
 import { ChartRenderer } from "./ChartRenderer";
 
 vi.mock("echarts-for-react", () => ({
@@ -27,6 +28,7 @@ vi.mock("echarts-for-react", () => ({
 
 afterEach(() => {
   cleanup();
+  vi.restoreAllMocks();
 });
 
 describe("ChartRenderer", () => {
@@ -56,6 +58,33 @@ describe("ChartRenderer", () => {
 
     expect(option.series[0].type).toBe("bar");
     expect(option.title.text).toBe("Monthly Sales");
+  });
+
+  it("shows a string error when a non-Error value is thrown during validation", () => {
+    vi.spyOn(core, "validateChartDefinition").mockImplementation(() => {
+      // eslint-disable-next-line @typescript-eslint/no-throw-literal
+      throw "string error";
+    });
+
+    render(<ChartRenderer definition={monthlySalesBar} height={360} />);
+
+    const alert = screen.getByRole("alert");
+
+    expect(alert).toBeInTheDocument();
+    expect(alert.textContent).toContain("string error");
+  });
+
+  // TS-10: accessibility — chart is exposed as an image with a label
+  it("uses chart title as aria-label by default", () => {
+    render(<ChartRenderer definition={monthlySalesBar} />);
+
+    expect(screen.getByRole("img", { name: "Monthly Sales" })).toBeInTheDocument();
+  });
+
+  it("uses the aria-label prop when provided", () => {
+    render(<ChartRenderer definition={monthlySalesBar} aria-label="Sales chart for Q1" />);
+
+    expect(screen.getByRole("img", { name: "Sales chart for Q1" })).toBeInTheDocument();
   });
 
   it("shows an error message for invalid chart definitions instead of crashing", () => {

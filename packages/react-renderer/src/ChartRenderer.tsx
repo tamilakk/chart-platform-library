@@ -9,6 +9,7 @@ import ReactECharts from "echarts-for-react";
 export interface ChartRendererProps {
   definition: ChartDefinition;
   height?: number;
+  "aria-label"?: string;
 }
 
 /**
@@ -16,11 +17,13 @@ export interface ChartRendererProps {
  *
  * @param definition Chart definition to render.
  * @param height Optional chart height in pixels.
+ * @param ariaLabel Accessible label for the chart. Defaults to the chart title when omitted.
  * @returns React chart component, or an error message when the definition is invalid.
  */
 export function ChartRenderer({
   definition,
-  height = 400
+  height = 400,
+  "aria-label": ariaLabel
 }: ChartRendererProps) {
   const result = useMemo(() => {
     try {
@@ -61,5 +64,9 @@ export function ChartRenderer({
     );
   }
 
-  return <ReactECharts option={result.option!} style={style} />;
+  return (
+    <div role="img" aria-label={ariaLabel ?? definition.title}>
+      <ReactECharts option={result.option!} style={style} />
+    </div>
+  );
 }
