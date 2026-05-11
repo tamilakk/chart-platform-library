@@ -19,6 +19,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.build.json --noEmit",
     "build:demo": "tsc -p tsconfig.demo.json",
     "demo": "pnpm run build:demo && node dist-demo/dev-test.js"
   },
