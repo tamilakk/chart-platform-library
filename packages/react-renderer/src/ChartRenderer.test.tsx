@@ -39,6 +39,15 @@ describe("ChartRenderer", () => {
     expect(chart.getAttribute("style")).toContain("height: 360px");
   });
 
+  // TS-6: responsive — component stretches to container width
+  it("uses 100% width for responsive layout", () => {
+    render(<ChartRenderer definition={monthlySalesBar} />);
+
+    const chart = screen.getByTestId("echarts-mock");
+
+    expect(chart.getAttribute("style")).toContain("width: 100%");
+  });
+
   it("passes transformed ECharts option to the renderer", () => {
     render(<ChartRenderer definition={monthlySalesBar} height={360} />);
 
