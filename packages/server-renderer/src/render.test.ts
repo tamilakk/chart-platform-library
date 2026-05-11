@@ -96,4 +96,86 @@ describe("server renderer", () => {
       })
     ).rejects.toThrow(/export width/i);
   });
+
+  // TS-2: static export preserves requested dimensions in SVG attributes
+  it("SVG output contains the requested width and height", async () => {
+    const svg = await renderToSVG(demoCharts.monthlySalesBar, {
+      width: 1200,
+      height: 600,
+      background: "#ffffff"
+    });
+
+    expect(svg).toMatch(/width="1200"/);
+    expect(svg).toMatch(/height="600"/);
+  });
+
+  // TS-3: multi-series chart renders without errors on both channels
+  it("renders multi-series bar chart to SVG", async () => {
+    const svg = await renderToSVG(demoCharts.revenueVsCostsBar, exportOptions);
+
+    expect(svg.trim().startsWith("<svg")).toBe(true);
+    expect(svg.length).toBeGreaterThan(100);
+  });
+
+  it("renders multi-series line chart to SVG", async () => {
+    const svg = await renderToSVG(demoCharts.trafficSourcesLine, exportOptions);
+
+    expect(svg.trim().startsWith("<svg")).toBe(true);
+    expect(svg.length).toBeGreaterThan(100);
+  });
+
+  // TS-4: long category labels do not cause errors
+  it("handles long category labels without throwing", async () => {
+    const chartWithLongLabels: ChartDefinition = {
+      type: "bar",
+      title: "Long Labels",
+      labels: [
+        "January 2024 — first quarter",
+        "February 2024 — first quarter",
+        "March 2024 — end of first quarter"
+      ],
+      series: [{ id: "s", label: "Sales", data: [100, 200, 150] }]
+    };
+
+    const svg = await renderToSVG(chartWithLongLabels, exportOptions);
+
+    expect(svg.trim().startsWith("<svg")).toBe(true);
+  });
+
+  // TS-7: large dataset does not cause errors
+  it("handles a large dataset (500 points) without failing", async () => {
+    const labels = Array.from({ length: 500 }, (_, i) => `Day ${i + 1}`);
+    const data = Array.from({ length: 500 }, () =>
+      Math.floor(Math.random() * 1000)
+    );
+
+    const largeChart: ChartDefinition = {
+      type: "line",
+      title: "Large Dataset",
+      labels,
+      series: [{ id: "values", label: "Values", data }]
+    };
+
+    const svg = await renderToSVG(largeChart, exportOptions);
+    const png = await renderToPNG(largeChart, exportOptions);
+
+    expect(svg.trim().startsWith("<svg")).toBe(true);
+    expect(Buffer.isBuffer(png)).toBe(true);
+    expectPngSignature(png);
+  });
+
+  // TS-8: reproducibility — two exports of the same chart produce structurally
+  // identical SVG. ECharts appends an internal render counter to CSS class names
+  // (e.g. zr29-cls-5), so we normalise those before comparing.
+  it("produces structurally identical SVG on repeated exports (reproducibility)", async () => {
+    const normalise = (svg: string) =>
+      svg
+        .replace(/zr\d+-cls-\d+/g, "zr-cls-N")
+        .replace(/zr\d+-ani-\d+/g, "zr-ani");
+
+    const svg1 = await renderToSVG(demoCharts.deviceSharePie, exportOptions);
+    const svg2 = await renderToSVG(demoCharts.deviceSharePie, exportOptions);
+
+    expect(normalise(svg1)).toBe(normalise(svg2));
+  });
 });
