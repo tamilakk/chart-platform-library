@@ -87,6 +87,16 @@ describe("server renderer", () => {
     );
   });
 
+  it("renders SVG without background option", async () => {
+    const svg = await renderToSVG(demoCharts.monthlySalesBar, {
+      width: 800,
+      height: 400
+    });
+
+    expect(svg.trim().startsWith("<svg")).toBe(true);
+    expect(svg.length).toBeGreaterThan(100);
+  });
+
   it("rejects invalid export options", async () => {
     await expect(
       renderToSVG(demoCharts.monthlySalesBar, {
