@@ -61,12 +61,154 @@ The project is implemented as a pnpm monorepo using:
 - Vitest
 - Sharp
 
+## Using the packages
+
+The library is published as three independent npm packages.
+Install only what you need.
+
+---
+
+### React — interactive chart in the browser
+
+```bash
+npm install @chart-platform/core @chart-platform/react-renderer echarts echarts-for-react
+```
+
+```tsx
+import { ChartRenderer } from "@chart-platform/react-renderer";
+import { monthlySalesBar } from "@chart-platform/core";
+
+export default function App() {
+  return <ChartRenderer definition={monthlySalesBar} height={400} />;
+}
+```
+
+The component renders an interactive ECharts chart with hover, tooltips and zoom.
+
+---
+
+### Node.js — generate a PNG or SVG on the server
+
+```bash
+npm install @chart-platform/core @chart-platform/server-renderer
+```
+
+```js
+const { renderToPNG, renderToSVG } = require("@chart-platform/server-renderer");
+const { monthlySalesBar } = require("@chart-platform/core");
+const { writeFileSync } = require("fs");
+
+// PNG
+const png = await renderToPNG(monthlySalesBar, { width: 800, height: 400, background: "#ffffff" });
+writeFileSync("chart.png", png);
+
+// SVG
+const svg = await renderToSVG(monthlySalesBar, { width: 800, height: 400 });
+writeFileSync("chart.svg", svg);
+```
+
+---
+
+### Serving a chart over HTTP (Express example)
+
+```js
+const express = require("express");
+const { renderToPNG } = require("@chart-platform/server-renderer");
+const { monthlySalesBar } = require("@chart-platform/core");
+
+const app = express();
+
+app.get("/chart.png", async (req, res) => {
+  const png = await renderToPNG(monthlySalesBar, { width: 800, height: 400, background: "#ffffff" });
+  res.set("Content-Type", "image/png").send(png);
+});
+
+app.listen(3000);
+```
+
+---
+
+### Returning a chart as a base64 string (for emails or JSON APIs)
+
+```js
+const { renderToPNGBase64 } = require("@chart-platform/server-renderer");
+const { monthlySalesBar } = require("@chart-platform/core");
+
+const base64 = await renderToPNGBase64(monthlySalesBar, { width: 800, height: 400, background: "#ffffff" });
+
+// Embed directly in HTML
+const html = `<img src="data:image/png;base64,${base64}" />`;
+```
+
+---
+
+### Using the same chart definition in both places
+
+The key idea of the library is that a chart is **defined once** and used in both environments:
+
+```
+@chart-platform/core
+  └── monthlySalesBar ──→ <ChartRenderer />   (browser, interactive)
+  └── monthlySalesBar ──→ renderToPNG()       (server, PNG file)
+```
+
+No duplication. The same object goes to both renderers.
+
+---
+
+### Defining a custom chart
+
+All built-in examples (`monthlySalesBar`, `userGrowthLine`, `deviceSharePie`, etc.) are plain
+objects that implement the `ChartDefinition` type exported from `@chart-platform/core`.
+You can define your own:
+
+```ts
+import type { ChartDefinition } from "@chart-platform/core";
+
+const weeklyOrders: ChartDefinition = {
+  type: "bar",
+  title: "Weekly Orders",
+  labels: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+  series: [
+    { id: "orders", label: "Orders", data: [34, 47, 29, 61, 55] }
+  ]
+};
+```
+
+Pass it to `ChartRenderer` or any server-side render function — it works the same way.
+
+---
+
+### Validation
+
+The library validates chart definitions at runtime before rendering.
+Invalid input throws an error with a descriptive message instead of failing silently:
+
+```js
+// 3 labels but only 2 data points — caught before any rendering happens
+const broken = {
+  type: "bar",
+  title: "Broken",
+  labels: ["Jan", "Feb", "Mar"],
+  series: [{ id: "s1", label: "Sales", data: [100, 200] }]
+};
+
+await renderToPNG(broken, { width: 800, height: 400 });
+// Error: data length must match labels length
+```
+
+The same validation runs inside `ChartRenderer` — instead of crashing,
+the component renders an accessible error message on screen.
+
+---
+
 ## Requirements
 
 - Node.js 22 or newer
 - pnpm 10 or newer
 
-## Installation
+## Contributing — clone and run locally
+
 Clone the repository and install dependencies:
 
 ```bash

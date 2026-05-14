@@ -1,6 +1,6 @@
 {
   "name": "@chart-platform/react-renderer",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": false,
   "description": "React renderer for Chart Platform Library based on Apache ECharts.",
   "license": "MIT",
