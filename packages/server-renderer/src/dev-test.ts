@@ -1,11 +1,13 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import {
-  conversionFunnel,
-  demoCharts,
   type ChartDefinition,
   type ExportOptions
 } from "@chart-platform/core";
+import {
+  conversionFunnel,
+  demoCharts
+} from "@chart-platform/test-fixtures";
 import { renderToPNG } from "./renderToPNG";
 import { renderToPNGBase64 } from "./renderToPNGBase64";
 import { renderToSVG } from "./renderToSVG";

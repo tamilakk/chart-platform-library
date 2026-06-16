@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { ChartDefinition, ExportOptions } from "@chart-platform/core";
-import { demoCharts } from "@chart-platform/core";
+import { demoCharts } from "@chart-platform/test-fixtures";
 import {
   renderToPNG,
   renderToPNGBase64,

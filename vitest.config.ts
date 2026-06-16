@@ -15,6 +15,10 @@ export default defineConfig({
       "@chart-platform/server-renderer": resolve(
         rootDir,
         "packages/server-renderer/src/index.ts"
+      ),
+      "@chart-platform/test-fixtures": resolve(
+        rootDir,
+        "packages/core/src/__fixtures__/charts.ts"
       )
     }
   },
@@ -32,6 +36,7 @@ export default defineConfig({
         "packages/**/types.ts",
         "packages/**/export-options.ts",
         "packages/core/src/examples.ts",
+        "packages/core/src/__fixtures__/**",
         "packages/server-renderer/src/dev-test.ts",
         "packages/**/*.d.ts"
       ],

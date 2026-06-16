@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { demoCharts, toEChartsOption, validateChartDefinition } from "./index";
+import { toEChartsOption, validateChartDefinition } from "./index";
+import { demoCharts } from "./__fixtures__/charts";
 
 describe("demo chart definitions", () => {
   it.each(Object.entries(demoCharts))(

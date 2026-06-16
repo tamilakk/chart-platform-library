@@ -5,7 +5,7 @@ import type React from "react";
 import "@testing-library/jest-dom/vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import type { ChartDefinition } from "@chart-platform/core";
-import { monthlySalesBar } from "@chart-platform/core";
+import { monthlySalesBar } from "@chart-platform/test-fixtures";
 import { afterEach, describe, expect, it, vi, beforeEach } from "vitest";
 import * as core from "@chart-platform/core";
 import { ChartRenderer } from "./ChartRenderer";

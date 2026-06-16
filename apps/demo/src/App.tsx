@@ -11,7 +11,7 @@ import {
   revenueVsCostsBar,
   trafficSourcesLine,
   userGrowthLine
-} from "@chart-platform/core";
+} from "./charts";
 
 /**
  * Renders the demo application with example charts.

@@ -6,7 +6,7 @@ import {
 import {
   deviceSharePie,
   monthlySalesBar
-} from "./examples";
+} from "./__fixtures__/charts";
 import { ChartDefinition } from "./types";
 
 describe("validateChartDefinition", () => {
