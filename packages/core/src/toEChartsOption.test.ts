@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { ChartDefinition } from "./types";
 import { toEChartsOption } from "./adapters/toEChartsOption";
+import { darkTheme, lightTheme, minimalTheme, resolveTheme } from "./theme";
 
 describe("toEChartsOption", () => {
   it("creates a bar chart option with correct series type, title, axis labels and data", () => {
@@ -224,5 +225,96 @@ describe("toEChartsOption", () => {
     const option = toEChartsOption(chart);
 
     expect(option).toBe(rawOption);
+  });
+});
+
+describe("toEChartsOption — theming", () => {
+  const barChart: ChartDefinition = {
+    type: "bar",
+    title: "Sales",
+    labels: ["Jan", "Feb"],
+    series: [{ id: "s", label: "Sales", data: [10, 20] }]
+  };
+
+  it("applies light theme colors and background by default", () => {
+    const option = toEChartsOption(barChart) as Record<string, unknown>;
+
+    expect(option.color).toEqual(lightTheme.colors);
+    expect(option.backgroundColor).toBe(lightTheme.backgroundColor);
+  });
+
+  it("applies dark theme when passed by name", () => {
+    const option = toEChartsOption(barChart, "dark") as Record<string, unknown>;
+
+    expect(option.color).toEqual(darkTheme.colors);
+    expect(option.backgroundColor).toBe(darkTheme.backgroundColor);
+  });
+
+  it("applies minimal theme when passed by name", () => {
+    const option = toEChartsOption(barChart, "minimal") as Record<string, unknown>;
+
+    expect(option.color).toEqual(minimalTheme.colors);
+    expect(option.backgroundColor).toBe(minimalTheme.backgroundColor);
+  });
+
+  it("applies custom theme object overriding only specified fields", () => {
+    const option = toEChartsOption(barChart, {
+      colors: ["#ff0000", "#00ff00"],
+      backgroundColor: "#000000"
+    }) as Record<string, unknown>;
+
+    expect(option.color).toEqual(["#ff0000", "#00ff00"]);
+    expect(option.backgroundColor).toBe("#000000");
+  });
+
+  it("applies textColor to textStyle and title", () => {
+    const option = toEChartsOption(barChart, { textColor: "#ffffff" }) as Record<
+      string,
+      unknown
+    >;
+    const textStyle = option.textStyle as Record<string, unknown>;
+    const title = option.title as Record<string, unknown>;
+    const titleStyle = title.textStyle as Record<string, unknown>;
+
+    expect(textStyle.color).toBe("#ffffff");
+    expect(titleStyle.color).toBe("#ffffff");
+  });
+
+  it("applies axisColor to xAxis and yAxis", () => {
+    const option = toEChartsOption(barChart, { axisColor: "#aaaaaa" }) as Record<
+      string,
+      unknown
+    >;
+    const xAxis = option.xAxis as Record<string, unknown>;
+    const yAxis = option.yAxis as Record<string, unknown>;
+    const xLine = xAxis.axisLine as Record<string, unknown>;
+    const yLine = yAxis.axisLine as Record<string, unknown>;
+    const xLineStyle = xLine.lineStyle as Record<string, unknown>;
+    const yLineStyle = yLine.lineStyle as Record<string, unknown>;
+
+    expect(xLineStyle.color).toBe("#aaaaaa");
+    expect(yLineStyle.color).toBe("#aaaaaa");
+  });
+
+  it("does not apply theme to raw echarts type", () => {
+    const rawOption = { series: [{ type: "bar", data: [1, 2] }] };
+    const chart: ChartDefinition = { type: "echarts", option: rawOption };
+
+    const result = toEChartsOption(chart, "dark");
+
+    expect(result).toBe(rawOption);
+  });
+
+  it("resolveTheme falls back to light for unknown theme name", () => {
+    const resolved = resolveTheme("light");
+
+    expect(resolved).toEqual(lightTheme);
+  });
+
+  it("resolveTheme merges custom object on top of light defaults", () => {
+    const resolved = resolveTheme({ colors: ["#123456"] });
+
+    expect(resolved.colors).toEqual(["#123456"]);
+    expect(resolved.backgroundColor).toBe(lightTheme.backgroundColor);
   });
 });

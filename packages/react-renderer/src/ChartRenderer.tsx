@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { ChartDefinition } from "@chart-platform/core";
+import type { ChartDefinition, ChartTheme, ThemeName } from "@chart-platform/core";
 import {
   toEChartsOption,
   validateChartDefinition
@@ -9,6 +9,7 @@ import ReactECharts from "echarts-for-react";
 export interface ChartRendererProps {
   definition: ChartDefinition;
   height?: number;
+  theme?: ChartTheme | ThemeName;
   "aria-label"?: string;
 }
 
@@ -23,19 +24,19 @@ export interface ChartRendererProps {
 export function ChartRenderer({
   definition,
   height = 400,
-  "aria-label": ariaLabel
+  theme, "aria-label": ariaLabel
 }: ChartRendererProps) {
   const result = useMemo(() => {
     try {
       validateChartDefinition(definition);
-      return { option: toEChartsOption(definition), error: null };
+      return { option: toEChartsOption(definition, theme), error: null };
     } catch (err) {
       return {
         option: null,
         error: err instanceof Error ? err.message : String(err)
       };
     }
-  }, [definition]);
+  }, [definition, theme]);
 
   const style = useMemo(
     () => ({

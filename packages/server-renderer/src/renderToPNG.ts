@@ -1,5 +1,5 @@
 import sharp from "sharp";
-import type { ChartDefinition, ExportOptions } from "@chart-platform/core";
+import type { ChartDefinition, ChartTheme, ExportOptions, ThemeName } from "@chart-platform/core";
 import { renderToSVG } from "./renderToSVG";
 
 /**
@@ -7,13 +7,15 @@ import { renderToSVG } from "./renderToSVG";
  *
  * @param definition Chart definition to render.
  * @param options Output settings for the export.
+ * @param theme Optional theme name or custom theme object. Defaults to the light theme.
  * @returns PNG image as a buffer.
  */
 export async function renderToPNG(
   definition: ChartDefinition,
-  options: ExportOptions
+  options: ExportOptions,
+  theme?: ChartTheme | ThemeName
 ): Promise<Buffer> {
-  const svg = await renderToSVG(definition, options);
+  const svg = await renderToSVG(definition, options, theme);
 
   return await sharp(Buffer.from(svg))
     .png()

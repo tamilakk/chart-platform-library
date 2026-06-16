@@ -24,3 +24,6 @@ export type { ExportOptions } from "./export-options";
 export { validateChartDefinition, validateExportOptions } from "./validation";
 export { toEChartsOption } from "./adapters/toEChartsOption";
 
+export type { ChartTheme, ThemeName } from "./theme";
+export { lightTheme, darkTheme, minimalTheme, resolveTheme } from "./theme";
+

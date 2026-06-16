@@ -8,6 +8,8 @@ import type {
   RawEChartsDefinition,
   ScatterChartDefinition
 } from "../types";
+import type { ChartTheme, ThemeName } from "../theme";
+import { resolveTheme } from "../theme";
 
 // Simplified ECharts configuration type used by the adapter.
 type EChartsOption = Record<string, unknown>;
@@ -278,28 +280,103 @@ function rawEChartsToOption(definition: RawEChartsDefinition): EChartsOption {
 }
 
 /**
+ * Applies a resolved theme to an ECharts option.
+ * Theme values are merged without overwriting explicitly set chart properties.
+ *
+ * @param option Base ECharts option produced by the adapter.
+ * @param theme Resolved ChartTheme to apply.
+ * @returns ECharts option with theme values applied.
+ */
+function applyTheme(option: EChartsOption, theme: ChartTheme): EChartsOption {
+  const result: EChartsOption = { ...option };
+
+  if (theme.colors) {
+    result.color = theme.colors;
+  }
+
+  if (theme.backgroundColor) {
+    result.backgroundColor = theme.backgroundColor;
+  }
+
+  if (theme.textColor || theme.fontFamily) {
+    result.textStyle = {
+      ...(theme.textColor ? { color: theme.textColor } : {}),
+      ...(theme.fontFamily ? { fontFamily: theme.fontFamily } : {})
+    };
+  }
+
+  if (theme.textColor && result.title) {
+    result.title = {
+      ...(result.title as object),
+      textStyle: { color: theme.textColor }
+    };
+  }
+
+  if (result.xAxis && (theme.axisColor || theme.textColor)) {
+    result.xAxis = {
+      ...(result.xAxis as object),
+      ...(theme.axisColor
+        ? {
+            axisLine: { lineStyle: { color: theme.axisColor } },
+            axisTick: { lineStyle: { color: theme.axisColor } },
+            splitLine: { lineStyle: { color: theme.axisColor } }
+          }
+        : {}),
+      ...(theme.textColor
+        ? { axisLabel: { color: theme.textColor } }
+        : {})
+    };
+  }
+
+  if (result.yAxis && (theme.axisColor || theme.textColor)) {
+    result.yAxis = {
+      ...(result.yAxis as object),
+      ...(theme.axisColor
+        ? {
+            axisLine: { lineStyle: { color: theme.axisColor } },
+            axisTick: { lineStyle: { color: theme.axisColor } },
+            splitLine: { lineStyle: { color: theme.axisColor } }
+          }
+        : {}),
+      ...(theme.textColor
+        ? { axisLabel: { color: theme.textColor } }
+        : {})
+    };
+  }
+
+  return result;
+}
+
+/**
  * Converts the shared chart definition to an ECharts config.
  *
  * @param definition Shared chart definition.
- * @returns ECharts option for the selected chart type.
+ * @param theme Optional theme name or custom theme object. Defaults to the light theme.
+ * @returns ECharts option for the selected chart type with the theme applied.
  */
-export function toEChartsOption(definition: ChartDefinition): EChartsOption {
+export function toEChartsOption(
+  definition: ChartDefinition,
+  theme?: ChartTheme | ThemeName
+): EChartsOption {
+  const resolvedTheme = resolveTheme(theme);
+
   switch (definition.type) {
     case "bar":
-      return cartesianToBarOption(definition);
+      return applyTheme(cartesianToBarOption(definition), resolvedTheme);
     case "line":
-      return cartesianToLineOption(definition);
+      return applyTheme(cartesianToLineOption(definition), resolvedTheme);
     case "pie":
-      return pieToOption(definition);
+      return applyTheme(pieToOption(definition), resolvedTheme);
     case "scatter":
-      return scatterToOption(definition);
+      return applyTheme(scatterToOption(definition), resolvedTheme);
     case "radar":
-      return radarToOption(definition);
+      return applyTheme(radarToOption(definition), resolvedTheme);
     case "gauge":
-      return gaugeToOption(definition);
+      return applyTheme(gaugeToOption(definition), resolvedTheme);
     case "funnel":
-      return funnelToOption(definition);
+      return applyTheme(funnelToOption(definition), resolvedTheme);
     case "echarts":
+      // Raw ECharts definitions are returned as-is — the user controls styling directly.
       return rawEChartsToOption(definition);
     default:
       throw new Error(

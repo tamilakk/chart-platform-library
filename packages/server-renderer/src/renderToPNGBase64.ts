@@ -1,4 +1,4 @@
-import type { ChartDefinition, ExportOptions } from "@chart-platform/core";
+import type { ChartDefinition, ChartTheme, ExportOptions, ThemeName } from "@chart-platform/core";
 import { renderToPNG } from "./renderToPNG";
 
 /**
@@ -6,12 +6,14 @@ import { renderToPNG } from "./renderToPNG";
  *
  * @param definition Chart definition to render.
  * @param options Output settings for the export.
+ * @param theme Optional theme name or custom theme object. Defaults to the light theme.
  * @returns PNG image encoded as a base64 string.
  */
 export async function renderToPNGBase64(
   definition: ChartDefinition,
-  options: ExportOptions
+  options: ExportOptions,
+  theme?: ChartTheme | ThemeName
 ): Promise<string> {
-  const png = await renderToPNG(definition, options);
+  const png = await renderToPNG(definition, options, theme);
   return png.toString("base64");
 }
