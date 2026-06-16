@@ -7,7 +7,7 @@ import {
 import {
   conversionFunnel,
   demoCharts
-} from "@chart-platform/test-fixtures";
+} from "../../core/src/__fixtures__/charts";
 import { renderToPNG } from "./renderToPNG";
 import { renderToPNGBase64 } from "./renderToPNGBase64";
 import { renderToSVG } from "./renderToSVG";
@@ -74,7 +74,7 @@ async function main() {
   console.log("======================");
   console.log("");
 
-  for (const [name, chart] of Object.entries(demoCharts)) {
+  for (const [name, chart] of Object.entries(demoCharts) as [string, ChartDefinition][]) {
     await renderChart(name, chart);
   }
 
