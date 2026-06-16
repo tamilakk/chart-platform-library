@@ -1,5 +1,6 @@
 import { ChartRenderer } from "@chart-platform/react-renderer";
 import { ValidationDemo } from "./ValidationDemo";
+import { ThemeDemo } from "./ThemeDemo";
 import {
   conversionFunnel,
   deviceSharePie,
@@ -82,6 +83,8 @@ export default function App() {
 
         <ValidationDemo />
       </section>
+
+      <ThemeDemo />
     </main>
   );
 }
