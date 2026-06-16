@@ -230,6 +230,85 @@ body {
   border: 1px solid #4c1d95;
 }
 
+/* ── SSR DEMO ────────────────────────────────────────────── */
+
+.ssr-demo-section {
+  margin-top: 48px;
+}
+
+.ssr-demo-header {
+  margin-bottom: 24px;
+}
+
+.ssr-demo-title {
+  margin: 0 0 10px;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.ssr-demo-description {
+  margin: 0;
+  max-width: 760px;
+  color: #4b5563;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.ssr-demo-description code {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 0.85em;
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #1d4ed8;
+}
+
+.ssr-comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .ssr-comparison {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ssr-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ssr-badge {
+  display: inline-block;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 100px;
+  background: rgba(79, 142, 247, 0.12);
+  color: #1d4ed8;
+  border: 1px solid rgba(79, 142, 247, 0.25);
+  width: fit-content;
+}
+
+.ssr-code {
+  margin: 0;
+  padding: 16px 18px;
+  background: #0f172a;
+  color: #93c5fd;
+  border-radius: 12px;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 0.78rem;
+  line-height: 1.75;
+  overflow-x: auto;
+  white-space: pre;
+  border: 1px solid #1e3a5f;
+  flex: 1;
+}
+
 /* ── VALIDATION DEMO ─────────────────────────────────────── */
 
 .validation-text {

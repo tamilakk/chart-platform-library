@@ -47,5 +47,16 @@
     "@chart-platform/core": "workspace:*",
     "echarts": "^6.0.0",
     "sharp": "^0.34.5"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0"
   }
 }

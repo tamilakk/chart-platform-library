@@ -85,6 +85,48 @@ export default function App() {
       </section>
 
       <ThemeDemo />
+
+      <section className="ssr-demo-section">
+        <div className="ssr-demo-header">
+          <h2 className="ssr-demo-title">Server-side rendering</h2>
+          <p className="ssr-demo-description">
+            The same <code>ChartDefinition</code> works on both the client and the server.
+            Use <code>&lt;ChartRenderer /&gt;</code> for interactive client charts and{" "}
+            <code>&lt;ChartServerImage /&gt;</code> as an async React Server Component
+            (e.g. Next.js App Router) — no DOM required, no hydration overhead.
+          </p>
+        </div>
+        <div className="ssr-comparison">
+          <div className="ssr-block">
+            <span className="ssr-badge">Client — @chart-platform/react-renderer</span>
+            <pre className="ssr-code">{`import { ChartRenderer } from "@chart-platform/react-renderer";
+
+// Works in any React client component
+<ChartRenderer
+  definition={myChart}
+  height={400}
+  theme="dark"
+/>`}</pre>
+          </div>
+          <div className="ssr-block">
+            <span className="ssr-badge">Server — @chart-platform/server-renderer</span>
+            <pre className="ssr-code">{`import { ChartServerImage } from "@chart-platform/server-renderer";
+
+// Async React Server Component — no DOM, no hydration
+// Works in Next.js App Router, Remix, etc.
+export default async function Page() {
+  return (
+    <ChartServerImage
+      definition={myChart}
+      width={800}
+      height={400}
+      theme="dark"
+    />
+  );
+}`}</pre>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }

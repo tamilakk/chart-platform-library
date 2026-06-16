@@ -7,6 +7,7 @@
     "module": "CommonJS",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "jsx": "react-jsx",
     "types": ["node"]
   },
   "include": ["src"],
