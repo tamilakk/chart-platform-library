@@ -35,7 +35,6 @@ export default defineConfig({
         "packages/**/index.{ts,tsx}",
         "packages/**/types.ts",
         "packages/**/export-options.ts",
-        "packages/core/src/examples.ts",
         "packages/core/src/__fixtures__/**",
         "packages/server-renderer/src/dev-test.ts",
         "packages/**/*.d.ts"
